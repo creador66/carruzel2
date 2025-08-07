@@ -2,1423 +2,1715 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>POS Premium | Sistema de Ventas</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>POS IAEgo - Sistema de Categorías</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    /* --- RESET Y VARIABLES --- */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  * { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+    font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+  }
+  
+  :root {
+    --bg-light: #f8f9fa;
+    --bg-panel: #ffffff;
+    --text-dark: #1e1e2f;
+    --text-light: #ffffff;
+    --text-gray: #6c757d;
+    --border: #e1e3e8;
+    --primary: #4a4e69;
+    --primary-light: #6d7298;
+    --success: #28a745;
+    --success-light: #3dd160;
+    --warning: #ffc107;
+    --danger: #dc3545;
+    --hover-light: rgba(74, 78, 105, 0.05);
+    --transition: all 0.3s ease;
+    --radius: 10px;
+    --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 6px 15px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 12px 25px rgba(0, 0, 0, 0.12);
+  }
+  
+  body { 
+    background: var(--bg-light); 
+    color: var(--text-dark); 
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+  
+  .container { 
+    max-width: 1400px; 
+    margin: 0 auto; 
+    padding: 1.5rem; 
+  }
+  
+  .hidden { display: none !important; }
+
+  /* Header */
+  header {
+    background: var(--primary);
+    color: var(--text-light);
+    box-shadow: var(--shadow-md);
+    padding: 0.8rem 0;
+    position: relative;
+    z-index: 10;
+  }
+  
+  .header-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  header h1 {
+    font-weight: 600;
+    font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  /* Barra de estadísticas */
+  .stats-bar {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    border-radius: var(--radius);
+    background: var(--bg-panel);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 1.5rem;
+  }
+  
+  .stats-item {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-size: 0.95rem;
+  }
+  
+  .stats-item i {
+    font-size: 1.6rem;
+    color: var(--primary);
+    background: rgba(74, 78, 105, 0.1);
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .stats-item span strong {
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+  
+  /* Botones */
+  .btn {
+    cursor: pointer;
+    padding: 0.8rem 1.6rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: var(--shadow-sm);
+    background: var(--bg-panel);
+    color: var(--text-dark);
+    white-space: nowrap;
+  }
+  
+  .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+  
+  .btn-primary { 
+    background: var(--primary); 
+    color: #fff; 
+  }
+  
+  .btn-primary:hover { 
+    background: var(--primary-light); 
+  }
+  
+  .btn-success { 
+    background: var(--success); 
+    color: #fff; 
+  }
+  
+  .btn-success:hover {
+    background: var(--success-light);
+  }
+  
+  .btn-outline { 
+    background: transparent; 
+    border: 1px solid var(--primary); 
+    color: var(--primary); 
+  }
+  
+  .btn-outline:hover { 
+    background: var(--hover-light); 
+  }
+  
+  .btn-sm { 
+    padding: 0.5rem 1rem; 
+    font-size: 0.85rem; 
+  }
+  
+  .btn:disabled { 
+    opacity: 0.6; 
+    cursor: not-allowed; 
+    transform: none !important;
+    box-shadow: none !important;
+  }
+  
+  /* Sección de mesas */
+  .mesas-header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    margin-bottom: 1.5rem; 
+  }
+  
+  .mesas-header h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+  
+  .mesas-grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); 
+    gap: 1.2rem; 
+    margin-bottom: 2rem; 
+  }
+  
+  .mesa {     
+    background: var(--bg-panel);
+    padding: 1.5rem 0.5rem;
+    text-align: center;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  
+  .mesa:hover { 
+    transform: translateY(-5px); 
+    box-shadow: var(--shadow-md);
+    border-color: var(--primary-light);
+  }
+  
+  .mesa::before { 
+    content: ''; 
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    right: 0; 
+    height: 4px; 
+  }
+  
+  .mesa.disponible::before { background: #adb5bd; }
+  .mesa.ocupada::before { background: var(--primary); }
+  
+  .mesa-number { 
+    font-size: 1.8rem; 
+    font-weight: 700; 
+    margin-bottom: 0.3rem; 
+    color: var(--primary);
+  }
+  
+  .mesa-capacity { 
+    font-size: 0.9rem; 
+    color: var(--text-gray); 
+    margin-bottom: 0.8rem;
+  }
+  
+  .mesa-actions { 
+    margin-top: 0.8rem; 
+    display: flex; 
+    justify-content: center; 
+    gap: 0.5rem; 
+  }
+  
+  .mesa-actions button { 
+    background: none; 
+    border: none; 
+    cursor: pointer; 
+    font-size: 0.9rem; 
+    padding: 0.3rem; 
+    color: var(--text-gray); 
+    transition: var(--transition); 
+  }
+  
+  .mesa-actions button:hover { 
+    color: var(--primary); 
+  }
+  
+  /* Diseño de dos columnas para menú y pedido */
+  .menu-container { 
+    display: grid; 
+    width: 100%;
+    grid-template-columns: 3fr 2fr; 
+    gap: 1.5rem;
+  }
+  
+  /* Sección de subcuentas */
+  .subcuentas-section {
+    background: var(--bg-panel);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 1.5rem;
+    grid-column: 1 / -1;
+  }
+  
+  .subcuentas-header { 
+    display: flex; 
+    gap: 10px; 
+    margin-bottom: 15px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  
+  .subcuentas-grid { 
+    display: flex; 
+    gap: 12px; 
+    overflow-x: auto;
+    padding-bottom: 5px;
+  } 
+  
+  .sub-btn { 
+    background: var(--bg-panel); 
+    border: 1px solid var(--border); 
+    border-radius: var(--radius); 
+    padding: 1rem 1.5rem; 
+    min-width: 140px;
+    text-align: center; 
+    cursor: pointer; 
+    transition: var(--transition); 
+    position: relative;
+    flex-shrink: 0;
+  }
+  
+  .sub-btn:hover { 
+    background: var(--hover-light); 
+    border-color: var(--primary-light);
+  }
+  
+  .sub-btn.active { 
+    background: var(--primary); 
+    color: #fff; 
+    border-color: var(--primary); 
+  }
+  
+  .sub-btn .cobrar-btn { 
+    position: absolute; 
+    top: 0.3rem; 
+    right: 0.3rem; 
+    background: none; 
+    border: none; 
+    color: inherit; 
+    cursor: pointer; 
+    opacity: 0.7; 
+    transition: var(--transition); 
+    padding: 0.2rem;
+    border-radius: 4px;
+  }
+  
+  .sub-btn .cobrar-btn:hover { 
+    opacity: 1; 
+    background: rgba(255,255,255,0.2);
+  }
+  
+  .notas-section { 
+    margin: 1.5rem 0; 
+    grid-column: 1 / -1;
+  }
+  
+  .notas-section input { 
+    width: 100%; 
+    padding: 0.9rem 1.2rem; 
+    border: 1px solid var(--border); 
+    border-radius: var(--radius); 
+    font-size: 1rem; 
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+  }
+  
+  .notas-section input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(74, 78, 105, 0.1);
+  }
+  
+  /* Productos */
+  .productos-grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
+    gap: 1.2rem; 
+    height: 600px;
+    overflow-y: auto;
+    padding: 5px;
+  }
+  
+  .producto {
+    text-align: center;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+  
+  .producto-img-container {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f9fa;
+  }
+  
+  .producto img { 
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: var(--transition);
+  }
+  
+  .producto:hover img {
+    transform: scale(1.05);
+  }
+  
+  .producto-info { 
+    padding: 0.8rem 0.5rem;
+    transition: var(--transition);
+  }
+  
+  .producto-name { 
+    font-weight: 500; 
+    margin: 0.3rem 0; 
+    color: var(--text-dark);
+  }
+  
+  .producto-price { 
+    font-weight: 600; 
+    color: var(--primary);
+  }
+  
+  .producto:hover .producto-info {
+    transform: translateY(-3px);
+  }
+  
+  /* Sección de pedido */
+  .pedido-section { 
+    background: var(--bg-panel); 
+    border-radius: var(--radius); 
+    box-shadow: var(--shadow-sm);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--border);
+  }
+  
+  .pedido-header { 
+    padding: 1.2rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .pedido-header h2 {
+    font-size: 1.4rem;
+    font-weight: 600;
+  }
+  
+  .pedido-items { 
+    padding: 1rem;
+    flex-grow: 1;
+    overflow-y: auto;
+    max-height: 450px;
+  }
+  
+  .pedido-item { 
+    display: flex; 
+    justify-content: space-between; 
+    padding: 0.9rem 0; 
+    border-bottom: 1px solid var(--border); 
+  }
+  
+  .pedido-item:last-child { border-bottom: none; }
+  
+  .pedido-item.canceled { 
+    opacity: 0.6; 
+    text-decoration: line-through;
+  }
+  
+  .pedido-item-info { flex-grow: 1; }
+  
+  .pedido-item-name { 
+    font-weight: 600; 
+    margin-bottom: 0.2rem;
+  }
+  
+  .pedido-item-sub { 
+    font-size: 0.85rem; 
+    color: var(--text-gray); 
+    margin-bottom: 0.3rem;
+  }
+  
+  .pedido-item-note { 
+    font-size: 0.85rem; 
+    color: var(--text-gray); 
+    font-style: italic; 
+    margin-top: 0.3rem; 
+  }
+  
+  .pedido-item-actions { 
+    display: flex; 
+    align-items: center; 
+    gap: 0.8rem; 
+  }
+  
+  .pedido-item-quantity { 
+    font-weight: 600; 
+    min-width: 30px; 
+    text-align: center; 
+    font-size: 1.1rem;
+  }
+  
+  .pedido-total { 
+    display: flex; 
+    justify-content: space-between; 
+    padding: 1.3rem 1.5rem; 
+    border-top: 2px solid var(--border); 
+    font-size: 1.3rem; 
+    font-weight: 700; 
+    background: var(--bg-light);
+    margin-top: auto;
+  }
+  
+  .cobrar-section { 
+    padding: 1rem 1.5rem;
+    display: flex; 
+    justify-content: flex-end; 
+    gap: 1rem; 
+    border-top: 1px solid var(--border);
+  }
+  
+  /* Modales */
+  .modal { 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%; 
+    background: rgba(0,0,0,0.5); 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    z-index: 1000; 
+    backdrop-filter: blur(2px);
+  }
+  
+  .modal-content { 
+    background: #fff; 
+    padding: 2.2rem; 
+    width: 100%; 
+    max-width: 450px; 
+    border-radius: 12px; 
+    box-shadow: var(--shadow-lg);
+  }
+  
+  .modal-header { 
+    margin-bottom: 1.8rem; 
+  }
+  
+  .modal-header h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--primary);
+  }
+  
+  .modal-body label { 
+    display: block; 
+    margin-bottom: 0.6rem; 
+    font-weight: 500; 
+    color: var(--text-dark);
+  }
+  
+  .modal-body input, 
+  .modal-body select { 
+    width: 100%; 
+    padding: 0.9rem; 
+    border: 1px solid var(--border); 
+    border-radius: 8px; 
+    margin-bottom: 1.3rem; 
+    font-size: 1rem; 
+    box-shadow: var(--shadow-sm);
+  }
+  
+  .modal-body input:focus,
+  .modal-body select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(74, 78, 105, 0.1);
+  }
+  
+  .modal-footer { 
+    display: flex; 
+    justify-content: flex-end; 
+    gap: 1rem; 
+    margin-top: 0.5rem;
+  }
+  
+  .cobro-items-list { 
+    max-height: 220px; 
+    overflow-y: auto; 
+    margin: 0 0 1.5rem; 
+    padding-left: 1.2rem; 
+    list-style-type: none;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem;
+  }
+  
+  .cobro-items-list li { 
+    margin-bottom: 0.8rem; 
+    padding: 0.5rem 0; 
+    border-bottom: 1px solid var(--border); 
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .cobro-items-list li:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+  }
+  
+  .cobro-total-display { 
+    font-weight: 700; 
+    text-align: right; 
+    margin: 0 0 1.5rem; 
+    font-size: 1.3rem;
+    color: var(--primary);
+  }
+  
+  /* Notificaciones */
+  .notification { 
+    position: fixed; 
+    bottom: 2rem; 
+    right: 2rem; 
+    padding: 1.2rem 1.8rem; 
+    border-radius: var(--radius); 
+    background: #fff; 
+    box-shadow: var(--shadow-lg); 
+    display: flex; 
+    align-items: center; 
+    gap: 0.8rem; 
+    z-index: 1001; 
+    transform: translateY(100px); 
+    opacity: 0; 
+    transition: var(--transition); 
+  }
+  
+  .notification.show { transform: translateY(0); opacity: 1; }
+  
+  .notification.ok { 
+    border-left: 4px solid var(--success); 
+  }
+  
+  .notification.error { 
+    border-left: 4px solid var(--danger); 
+  }
+  
+  .notification i { 
+    font-size: 1.5rem; 
+  }
+  
+  .notification.ok i { color: var(--success); }
+  .notification.error i { color: var(--danger); }
+  
+  /* Scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 10px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-light);
+  }
+  
+  /* Media queries para pantallas grandes */
+  
+  
+  @media (max-width: 800px) {
+    .menu-container {
+      grid-template-columns: 1fr;
     }
     
-    :root {
-      --primary: #4361ee;
-      --primary-dark: #3a56d4;
-      --primary-light: #eef2ff;
-      --secondary: #7209b7;
-      --accent: #f72585;
-      --success: #4cc9f0;
-      --danger: #ef233c;
-      --warning: #fca311;
-      --dark: #2b2d42;
-      --light: #f8f9fa;
-      --gray: #8d99ae;
-      --gray-light: #e2e8f0;
-      --bg: #f5f7fa;
-      --card-bg: #ffffff;
-      --text: #2d3748;
-      --text-light: #ffffff;
-      --border: #e2e8f0;
-      --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
-      --shadow-md: 0 4px 12px rgba(0,0,0,0.12);
-      --shadow-lg: 0 8px 24px rgba(0,0,0,0.15);
-      --radius-sm: 8px;
-      --radius-md: 12px;
-      --radius-lg: 16px;
-      --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    .pedido-section {
+      height: auto;
+      max-height: 500px;
+      
     }
-    
-    body {
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-      height: 100vh;
-      display: flex;
+  }
+  
+  @media (max-width: 408px) {
+    .stats-bar {
       flex-direction: column;
-      overflow: hidden;
+      gap: 10px;
+      align-items: flex-start;
     }
     
-    /* --- HEADER --- */
-    .app-header {
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      color: var(--text-light);
-      padding: 1rem 2rem;
-      box-shadow: var(--shadow-md);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: relative;
-      z-index: 10;
-    }
-    
-    .app-title {
-      font-weight: 600;
-      font-size: 1.5rem;
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-    
-    .header-controls {
-      display: flex;
-      gap: 1rem;
-    }
-    
-    .btn {
-      background: var(--card-bg);
-      color: var(--primary);
-      border: none;
-      border-radius: var(--radius-sm);
-      padding: 0.6rem 1.2rem;
-      font-size: 0.9rem;
-      font-weight: 500;
-      cursor: pointer;
-      box-shadow: var(--shadow-sm);
-      transition: var(--transition);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-    }
-    
-    .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-md);
-    }
-    
-    .btn:active {
-      transform: translateY(0);
-    }
-    
-    .btn-primary {
-      background: var(--primary);
-      color: var(--text-light);
-    }
-    
-    .btn-primary:hover {
-      background: var(--primary-dark);
-    }
-    
-    .btn-sm {
-      padding: 0.3rem 0.6rem;
-      font-size: 0.8rem;
-    }
-    
-    .btn-icon {
-      padding: 0.5rem;
-      min-width: 36px;
-      height: 36px;
-    }
-    
-    .btn-back {
-      background: rgba(255,255,255,0.2);
-      color: var(--text-light);
-    }
-    
-    .btn-back:hover {
-      background: rgba(255,255,255,0.3);
-    }
-    
-    /* --- MAIN CONTENT - PANTALLA DIVIDIDA --- */
-    .split-layout {
-      display: flex;
-      flex: 1;
-      height: calc(100vh - 64px);
-    }
-    
-    /* --- PANEL IZQUIERDO - MESAS --- */
-    .tables-panel {
-      width: 35%;
-      background: var(--card-bg);
-      border-right: 1px solid var(--border);
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      position: relative;
-    }
-    
-    .panel-header {
-      padding: 1.2rem 1.5rem;
-      background: #f8f9fc;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    
-    .section-title {
-      font-weight: 600;
-      font-size: 1.2rem;
-      color: var(--dark);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    .tables-bar {
-      display: flex;
-      padding: 0.75rem 1rem;
-      gap: 0.75rem;
-      overflow-x: auto;
-      border-bottom: 1px solid var(--border);
-      background: #f8f9fc;
-    }
-    
-    .table-btn {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 0.5rem 1rem;
-      font-size: 0.9rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: var(--transition);
-      white-space: nowrap;
-      min-width: 80px;
-      text-align: center;
-      box-shadow: var(--shadow-sm);
-    }
-    
-    .table-btn:hover {
-      background: var(--primary-light);
-      transform: translateY(-2px);
-    }
-    
-    .table-btn.active {
-      background: var(--primary);
-      color: var(--text-light);
-      border-color: var(--primary);
-      box-shadow: 0 4px 8px rgba(67, 97, 238, 0.2);
-    }
-    
-    .tables-container {
-      flex: 1;
-      overflow-y: auto;
-      padding: 1.5rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-    }
-    
-    .table-item {
-      background: var(--card-bg);
-      border-radius: var(--radius-md);
-      box-shadow: var(--shadow-sm);
-      border: 1px solid var(--border);
-      overflow: hidden;
-      transition: var(--transition);
-    }
-    
-    .table-item.selected {
-      border: 2px solid var(--primary);
-      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
-    }
-    
-    .table-header {
-      padding: 1rem;
-      background: var(--primary-light);
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    
-    .table-title {
-      font-weight: 600;
-      font-size: 0.95rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      color: var(--dark);
-    }
-    
-    .table-total {
-      font-weight: 600;
-      color: var(--primary);
-      font-size: 0.95rem;
-    }
-    
-    .table-body {
-      padding: 0.75rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-    
-    .table-footer {
-      padding: 0.75rem;
-      border-top: 1px solid var(--border);
-      display: flex;
-      justify-content: center;
-      gap: 0.5rem;
-    }
-    
-    .add-sub-btn {
-      background: var(--primary);
-      color: var(--text-light);
-      width: 100%;
-      padding: 0.5rem;
-      font-size: 0.85rem;
-    }
-    
-    /* Subcuentas - Diseño moderno */
-    .sub-accounts {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-      margin-top: 0.5rem;
-    }
-    
-    .sub-account {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.7rem;
-      border-radius: var(--radius-sm);
-      background: var(--bg);
-      transition: var(--transition);
-      border: 1px solid var(--border);
-      font-size: 0.85rem;
-      gap: 0.5rem;
-    }
-    
-    .sub-account.selected {
-      background: rgba(67, 97, 238, 0.1);
-      border-color: var(--primary);
-    }
-    
-    .sub-account:hover {
-      background: rgba(67, 97, 238, 0.05);
-    }
-    
-    .sub-name {
-      font-weight: 500;
-      flex: 1;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      min-width: 0;
-    }
-    
-    .sub-total {
-      font-weight: 600;
-      color: var(--primary);
-      flex-shrink: 0;
-      margin: 0 0.3rem;
-      font-size: 0.9rem;
-    }
-    
-    .sub-controls {
-      display: flex;
-      gap: 0.3rem;
-    }
-    
-    .sub-controls .btn {
-      padding: 0.3rem;
-      min-width: 28px;
-      height: 28px;
-    }
-    
-    /* --- PANEL DERECHO - PRODUCTOS --- */
-    .products-panel {
-      position: relative;
-      width: 65%;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-    
-    .categories-container {
-      background: var(--card-bg);
-      border-bottom: 1px solid var(--border);
-      padding: 1rem 1.5rem;
-      overflow-x: auto;
-    }
-    
-    nav.categories {
-      display: flex;
-      gap: .6rem;
-      flex-wrap: nowrap;
-      padding-bottom: 0.2rem;
-    }
-    
-    nav.categories button {
-      background: var(--card-bg);
-      border: none;
-      padding: .6rem 1rem;
-      border-radius: var(--radius-sm);
-      font-size: .9rem;
-      cursor: pointer;
-      box-shadow: var(--shadow-sm);
-      transition: var(--transition);
-      border: 1px solid var(--border);
-      white-space: nowrap;
-    }
-    
-    nav.categories button:hover {
-      background: #f0f2f5;
-    }
-    
-    nav.categories button.active {
-      color: var(--text-light);
-      background: var(--primary);
-      box-shadow: 0 4px 10px rgba(67, 97, 238, 0.3);
-      border-color: var(--primary);
-    }
-    
-    .products-container {
-      flex: 1;
-      overflow-y: auto;
-      padding: 1.5rem;
-      display: grid;
+    .mesas-grid {
       grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-      gap: 1.5rem;
-      align-content: start;
     }
     
-    .product-card {
-      display: flex;
-      flex-direction: column;
-    }
+  .cobrar-section {
+   padding: 10px 6px;
+   gap: 5px;
+ }
+ 
+ 
+   .btn {
+    cursor: pointer;
+    padding: 10px 10px;
+    font-size: 13px;
+    gap: 5px;
+  
+  }
+  
+ 
+  .mesas-header {
+    display: grid;
+    margin-bottom: 1.5rem;
+  }
+ 
+  .productos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 5px;
+    height: 200px;
     
-    .product-image {
-      width: 100%;
-      height: 120px;
-      position: relative;
-      box-shadow: var(--shadow-md);
-    }
+    padding: 2px;
+  }
     
-    .product-image img {
-      width: 100%;
-      height: 100%;
-      border-radius: 10px;
-      object-fit: cover;
-    }
-    
-    .product-image i {
-      font-size: 2.5rem;
-      opacity: 0.3;
-    }
-    
-    .product-info {
-      padding: 5px;
-      bottom: 0;
-      flex: 1;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: absolute;
-      width: 100%;
-      background-color: #0c101991;
-      box-shadow: var(--shadow-md);
-      border-radius: 0px 0px 10px 10px;
-    }
-    
-    .product-price {
-      margin-right: 0.5rem;
-      color: #ffffff;
-      font-weight: 600;
-    }
-    
-    .product-name {
-      margin-left: 0.5rem;
-      color: #b8e3f5;
-      font-size: 0.9rem;
-      font-weight: 500;
-    }
-    
-    .product-actions {
-      margin-top: 10px;
-      transition: var(--transition);
-      box-shadow: var(--shadow-sm);
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border);
-      padding: 0.8rem;
-      display: flex;
-      gap: .5rem;
-      align-items: center;
-      justify-content: center;
-    }
-    
-    .product-actions:hover {
-      transform: translateY(-5px);
-      box-shadow: var(--shadow-md);
-    }
-    
-    .qty-input {
-      width: 60px;
-      padding: .6rem;
-      border: none;
-      border-radius: var(--radius-sm);
-      text-align: center;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      font-weight: 500;
-      font-size: 0.9rem;
-    }
-    
-    .add-btn {
-      flex: 1;
-      background: var(--primary);
-      color: var(--text-light);
-      border: none;
-      border-radius: var(--radius-sm);
-      padding: .6rem;
-      font-size: .85rem;
-      cursor: pointer;
-      transition: var(--transition);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.3rem;
-    }
-    
-    .add-btn:hover {
-      background: var(--primary-dark);
-    }
-    
-    .add-btn:disabled {
-      background: var(--gray);
-      cursor: not-allowed;
-    }
-    
-    /* --- MODAL --- */
-    .modal-overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(0,0,0,0.4);
-      display: none;
-      place-content: center;
-      z-index: 1000;
-      backdrop-filter: blur(2px);
-    }
-    
-    .modal {
-      background: var(--card-bg);
-      border-radius: var(--radius-md);
-      padding: 1.5rem;
-      width: 100%;
-      max-width: 500px;
-      box-shadow: var(--shadow-lg);
-      animation: modalAppear 0.3s ease-out;
-    }
-    
-    @keyframes modalAppear {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    
-    .modal-header {
-      margin-bottom: 1.5rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    
-    .modal-title {
-      font-weight: 600;
-      font-size: 1.4rem;
-      color: var(--dark);
-    }
-    
-    .modal-body {
-      margin-bottom: 1.8rem;
-    }
-    
-    .modal-list {
-      list-style: none;
-      max-height: 300px;
-      overflow-y: auto;
-      margin-bottom: 1.5rem;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 1rem;
-    }
-    
-    .modal-list li {
-      padding: 0.6rem 0;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.9rem;
-    }
-    
-    .modal-list li:last-child {
-      border-bottom: none;
-    }
-    
-    .modal-input {
-      width: 100%;
-      padding: .9rem 1.2rem;
-      margin-bottom: 1.2rem;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      font-size: 1rem;
-      background: var(--bg);
-      transition: var(--transition);
-      box-shadow: var(--shadow-sm);
-    }
-    
-    .modal-input:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
-    }
-    
-    .modal-total {
-      text-align: right;
-      font-size: 1.3rem;
-      font-weight: 600;
-      margin: 1.5rem 0;
-      padding-top: 1rem;
-      border-top: 2px solid var(--border);
-    }
-    
-    .modal-total span {
-      color: var(--primary);
-    }
-    
-    .modal-select {
-      width: 100%;
-      padding: 0.8rem 1rem;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border);
-      background: var(--bg);
-      font-size: 1rem;
-      margin-bottom: 1.5rem;
-    }
-    
-    .btn-group {
-      display: flex;
-      justify-content: flex-end;
-      gap: .8rem;
-    }
-    
-    .btn-cancel {
-      background: var(--gray);
-      color: var(--text-light);
-    }
-    
-    .btn-cancel:hover {
-      background: #7b8799;
-    }
-    
-    .btn-confirm {
-      background: var(--success);
-      color: var(--text-light);
-    }
-    
-    .btn-confirm:hover {
-      background: #3db3d9;
-    }
-    
-    /* --- STATUS BAR --- */
-    .status-bar {
-      padding: 0.8rem 1.5rem;
-      background: var(--card-bg);
-      border-top: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.85rem;
-      color: var(--gray);
-    }
-    
-    .status-item {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    
-    .status-value {
-      font-weight: 600;
-      color: var(--dark);
-      margin-left: 0.2rem;
-    }
-    
-    /* --- NO TABLES MESSAGE --- */
-    .no-tables {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 1rem;
-      text-align: center;
-      padding: 2rem;
-      color: var(--gray);
-    }
-    
-    .no-tables i {
-      font-size: 3rem;
-      opacity: 0.3;
-    }
-    
-    /* Table header controls */
-    .table-header-controls {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    
-    /* Charge all button */
-    .btn-charge-all {
-      background: var(--accent);
-      color: var(--text-light);
-    }
-    
-    .btn-charge-all:hover {
-      background: #e61677;
-    }
-
-    /* Edit button */
-    .btn-edit {
-      background: var(--warning);
-      color: var(--text-light);
-    }
-    
-    .btn-edit:hover {
-      background: #e0940f;
-    }
-
-    .btn-delete {
-      background: var(--danger);
-      color: var(--text-light);
-    }
-    
-    .btn-delete:hover {
-      background: #d21b2f;
-    }
-
-    #keyboard {
-      display: grid;
-      grid-template-columns: repeat(10, 1fr);
+    .menu-container {
+      grid-template-columns: 1fr;
       gap: 5px;
     }
-    #keyboard button {
-      padding: 10px; 
-      font-size: 16px; 
-      border: 1px solid #ccc;
-      border-radius: 4px; 
-      background: #f0f0f0; 
-      cursor: pointer;
-    }
-    #keyboard button:active { 
-      background: #d0d0d0; 
-    }
-    .wide { 
-      grid-column: span 2; 
-    }
-    
+  .subcuentas-section {
 
+  padding: 14px;
+
+  margin-bottom: 1rem;
+  grid-column: 5 / -4;
+}
     
+    
+  }
+  
+  /* Estilos para vista previa de comandera */
+  .comandera-preview {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: var(--shadow-lg);
+    z-index: 2000;
+    width: 350px;
+    max-width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  
+  .comandera-preview .close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--text-gray);
+  }
+  
+  .comandera-preview h3 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: var(--primary);
+    border-bottom: 2px solid var(--primary);
+    padding-bottom: 0.5rem;
+  }
+  
+  .comandera-preview .comandera-header {
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  
+  .comandera-preview .comandera-header h4 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .comandera-preview .comandera-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px dashed #ddd;
+  }
+  
+  .comandera-preview .comandera-subcuenta {
+    font-weight: bold;
+    margin-top: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .comandera-preview .comandera-footer {
+    margin-top: 1.5rem;
+    text-align: center;
+    padding-top: 1rem;
+    border-top: 2px solid #ddd;
+    font-weight: bold;
+  }
+  
+  .printed-icon {
+    color: var(--success);
+    margin-left: 5px;
+    font-size: 0.8rem;
+  }
+  
+  .reprint-btn {
+    background: none;
+    border: none;
+    color: var(--primary);
+    cursor: pointer;
+    padding: 0.2rem;
+    border-radius: 4px;
+    transition: var(--transition);
+  }
+  
+  .reprint-btn:hover {
+    background: rgba(74, 78, 105, 0.1);
+  }
+  
+  /* Nuevos estilos para categorías */
+  .categorias-section {
+    background: var(--bg-panel);
+    border-radius: var(--radius);
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow-sm);
+  }
+  
+  .categorias-section h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.8rem;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .categorias {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .categorias button {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    color: var(--text-dark);
+    cursor: pointer;
+    transition: background 0.3s ease, color 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+  
+  .categorias button:hover {
+    background: rgba(74, 78, 105, 0.05);
+  }
+  
+  .categorias button.active {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+  }
+  
+  .categorias button i {
+    font-size: 0.9em;
+  }
+  
+  /* Nuevos estilos para impresión */
+  .printed-indicator {
+    font-size: 0.8rem;
+    color: var(--success);
+    margin-left: 5px;
+    font-weight: normal;
+  }
+  
+  .reprint-indicator {
+    color: var(--warning);
+  }
+  
+  .print-status {
+    font-size: 0.75rem;
+    color: var(--text-gray);
+    margin-top: 3px;
+  }
+  
+  .print-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 3px;
+  }
+  
+  .print-controls button {
+    font-size: 0.75rem;
+    padding: 2px 5px;
+  }
   </style>
 </head>
 <body>
-  <header class="app-header">
-    <div class="app-title">
-      <i class="fas fa-cash-register"></i> POS IAEgo
-    </div>
-    <div class="header-controls">
-      <button class="btn btn-sm btn-back" onclick="goBack()" id="back-button">
-        <i class="fas fa-arrow-left"></i> Regresar
-      </button>
-      <button class="btn btn-sm" onclick="fetchYRefresh()">
-        <i class="fas fa-sync"></i> Actualizar
-      </button>
+  <header>
+    <div class="header-content">
+      <h1><i class="fas fa-cash-register"></i> POS IAEgo - Sistema de Impresión Mejorado</h1>
+      <div class="header-actions">
+        <button class="btn btn-outline">
+          <i class="fas fa-cog"></i> Configuración
+        </button>
+      </div>
     </div>
   </header>
 
-  <div class="split-layout">
-    <div class="tables-panel">
-      <div class="panel-header">
-        <h2 class="section-title">
-          <i class="fas fa-table"></i> Mesas Activas
-        </h2>
-        <button id="add-table" class="btn btn-sm btn-primary">
-          <i class="fas fa-plus"></i> Agregar Mesa
-        </button>
+  <div class="container">
+    <!-- Barra de estadísticas -->
+    <div class="stats-bar">
+      <div class="stats-item">
+        <i class="fas fa-table"></i>
+        <span>Mesas libres: <strong id="mesas-disponibles">0</strong></span>
       </div>
-
-      <div class="tables-bar" id="tables-bar"></div>
-      <div class="tables-container" id="tables-container">
-        <div class="tables-list" id="tables-list"></div>
+      <div class="stats-item">
+        <i class="fas fa-clock"></i>
+        <span>Hora: <strong id="current-time">00:00:00</strong></span>
       </div>
-      <div class="status-bar">
-        <div id="keyboard"></div>
+      <div class="stats-item">
+        <i class="fas fa-coins"></i>
+        <span>Ventas hoy: <strong id="ventas-hoy">$0.00</strong></span>
+      </div>
+      <div class="stats-item">
+        <i class="fas fa-users"></i>
+        <span>Clientes: <strong id="clientes-activos">0</strong></span>
       </div>
     </div>
 
-    <div class="products-panel">
-      <div id="modalOverlay" class="modal-overlay">
-        <div class="modal">
-          <div id="modalBody"></div>
-          <div class="btn-group">
-            <button id="modalCancel" class="btn btn-cancel">Cancelar</button>
-            <button id="modalConfirm" class="btn btn-confirm">Confirmar</button>
-          </div>
+    <!-- Vista de Mesas -->
+    <div id="mesas-view">
+      <div class="mesas-header">
+        <h2>Administración de Mesas</h2>
+        <div class="mesas-actions">
+          <button class="btn btn-primary" onclick="mostrarModalMesa()">
+            <i class="fas fa-plus"></i> Nueva Mesa
+          </button>
+          <button class="btn btn-outline" onclick="cargarDatos()">
+            <i class="fas fa-sync"></i> Actualizar
+          </button>
         </div>
+      </div>
+      <div class="mesas-grid" id="mesas-container">
+        <!-- Mesas se renderizarán aquí -->
+      </div>
+    </div>
+
+    <!-- Vista de Menú y Pedido -->
+    <div id="menu-view" class="hidden">
+      <div class="subcuentas-section">
+        <div class="subcuentas-header">
+          <button class="btn btn-outline" onclick="volverAMesas()">
+            <i class="fas fa-arrow-left"></i> Volver a Mesas
+          </button>
+          <input type="text" class="btn btn-outline" id="input-nueva-subcuenta" placeholder="Nueva subcuenta">
+          <button class="btn btn-primary" onclick="addSubcuenta()">
+            <i class="fas fa-plus"></i> Agregar
+          </button>
+          <div class="flex-grow"></div>
+        </div>
+        <div class="subcuentas-grid" id="subcuentas-container"></div>
+      </div>
+      
+      <div class="notas-section">
+        <input type="text" id="input-nota" placeholder="Nota para el producto">
       </div>
 
-      <div class="categories-container">
-        <nav class="categories" id="categories"></nav>
+      <!-- Sección de categorías -->
+      <div class="categorias-section">
+        <h3><i class="fas fa-tags"></i> Categorías de Productos</h3>
+        <div class="categorias" id="categorias-container"></div>
       </div>
-      <div class="products-container" id="recetas-cards"></div>
-      <div class="status-bar">
-        <div class="status-item">
-          <i class="fas fa-layer-group"></i>
-          <span>Mesas activas: <span class="status-value" id="active-tables"></span></span>
+
+      <div class="menu-container">
+        <!-- Sección de productos -->
+        <div class="menu-section">
+          <div class="productos-grid" id="productos-container"></div>
         </div>
-        <div class="status-item">
-          <i class="fas fa-box"></i>
-          <span>Productos: <span class="status-value" id="product-count"></span></span>
-        </div>
-        <div class="status-item">
-          <i class="fas fa-tags"></i>
-          <span>Categorías: <span class="status-value" id="category-count"></span></span>
+
+        <!-- Sección de pedido -->
+        <div class="pedido-section">
+          <div class="pedido-header">
+            <h2>Pedido Mesa <span id="pedido-mesa-numero">--</span></h2>
+            <button class="btn btn-sm btn-outline">
+              <i class="fas fa-history"></i> Historial
+            </button>
+          </div>
+          <div class="pedido-items" id="pedido-items"></div>
+          <div class="pedido-total">
+            <span>Total:</span> <span id="pedido-total">$0.00</span>
+          </div>
+          <div class="cobrar-section">
+            <button class="btn btn-outline" onclick="limpiarPedido()">
+              <i class="fas fa-trash-alt"></i> Limpiar
+            </button>
+            <button class="btn btn-success" id="btn-cobrar-todo" onclick="iniciarCobro('todo')" disabled>
+              <i class="fas fa-cash-register"></i> Cerrar
+            </button>
+            <button class="btn btn-outline" onclick="imprimirComandera()">
+              <i class="fas fa-print"></i> Imprimir
+            </button>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- Modal Mesa -->
+  <div id="modal-mesa" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header"><h3 id="titulo-mesa">Nueva Mesa</h3></div>
+      <div class="modal-body">
+        <label>Número:</label>
+        <input type="number" id="input-mesa-numero" min="1">
+        <label>Capacidad:</label>
+        <input type="number" id="input-mesa-capacidad" min="1">
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="cerrarModalMesa()">Cancelar</button>
+        <button class="btn btn-primary" onclick="guardarMesa()">Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Cobro -->
+  <div id="modal-cobro" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="titulo-cobro">Cobrar</h3>
+      </div>
+      <div class="modal-body">
+        <ul id="cobro-items-container" class="cobro-items-list"></ul>
+        <div class="cobro-total-display">
+          Total: <span id="cobro-total">$0.00</span>
+        </div>
+        <label for="pay-method">Método de pago:</label>
+        <select id="pay-method" class="modal-select">
+          <option value="Efectivo">Efectivo</option>
+          <option value="Tarjeta">Tarjeta</option>
+          <option value="Transferencia">Transferencia</option>
+          <option value="Mixto">Mixto</option>
+        </select>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="cerrarModalCobro()">Cancelar</button>
+        <button class="btn btn-success" onclick="confirmarCobro()">Confirmar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Vista previa de comandera -->
+  <div id="comandera-preview" class="comandera-preview hidden">
+    <span class="close" onclick="cerrarComanderaPreview()">&times;</span>
+    <h3>COMANDEA</h3>
+    <div class="comandera-header">
+      <h4>Mesa: <span id="comandera-mesa">--</span></h4>
+      <div>Fecha: <span id="comandera-fecha">--</span></div>
+      <div>Hora: <span id="comandera-hora">--</span></div>
+    </div>
+    <div id="comandera-items-container"></div>
+    <div class="comandera-footer">
+      <button class="btn btn-primary" onclick="imprimirComanderaReal()">Imprimir</button>
+    </div>
+  </div>
+
+  <div id="notification" class="notification"></div>
+
   <script>
-    // CONFIGURACIÓN
+    // ---------- Configuración y constantes ----------
     const GAS_URL = 'https://script.google.com/macros/s/AKfycbxBOyRG_Q3hEtHyRcgnhYLqk4yB5BGWQXQC4cDb-QG45Gs96fL5dnn9B9GD87rS9ghW7w/exec';
-    const CONFIG = {
-      STORAGE_KEYS: { ALMACEN: 'almacen6525', COSTEADAS: 'recetasCosteadas' },
-      FACTORES: { mg: 0.001, g: 1, kg: 1000, ml: 1, l: 1000, pz: 1 },
-      CATEGORIAS: { volumen: ['ml','l'], peso: ['mg','g','kg'], conteo: ['pz'] },
-      MARGEN: 2
+    const STORAGE_KEYS = {
+      MESAS: 'pv_tables',
+      ALMACEN: 'almacen6525',
+      COSTEADAS: 'recetasCosteadas'
+    };
+    const MARGEN = 2;
+    const FACTORES = { mg:0.001, g:1, kg:1000, ml:1, l:1000, pz:1 };
+
+    // Estado global
+    let mesas = JSON.parse(localStorage.getItem(STORAGE_KEYS.MESAS))  || [];
+    let recetas = [];
+    let categorias = [];
+    let categoriaSeleccionada = '';
+    let mesaSel = null;
+    let subActiva = null;
+    let ventasHoy = 0;
+    let comanderaItems = [];
+    
+    // Estado del modal de cobro
+    let cobroActual = {
+      items: [],
+      tipo: null, // 'subcuenta' o 'todo'
+      cuentaName: null,
+      callback: null
     };
 
-    // Helpers
+    // ---------- Helpers API ----------
     async function apiFetch(op, payload = {}) {
       const form = new FormData();
       form.append('op', op);
-      Object.entries(payload).forEach(([key, value]) => form.append(key, value));
-      const response = await fetch(GAS_URL, { method: 'POST', body: form });
-      const json = await response.json();
-      if (json.status === 'success') return json.data;
+      Object.entries(payload).forEach(([k,v]) => form.append(k,v));
+      const resp = await fetch(GAS_URL, { method:'POST', body: form });
+      const json = await resp.json();
+      if(json.status==='success') return json.data;
       throw new Error(json.message);
     }
 
     function calcularCosto(ingredientes) {
-      const almacen = JSON.parse(localStorage.getItem(CONFIG.STORAGE_KEYS.ALMACEN) || '[]');
-      const factores = CONFIG.FACTORES;
-      let total = 0;
-
+      const almacen = JSON.parse(localStorage.getItem(STORAGE_KEYS.ALMACEN) || '[]');
+      let total=0;
       ingredientes.forEach(item => {
-        const producto = almacen.find(p => String(p.codigo) === String(item.codigo));
-        if (!producto) return;
-
-        const unidadAlmacen = factores[producto.unidadDeMedida.trim().toLowerCase()];
-        const unidadIngrediente = factores[item.unidad.trim().toLowerCase()];
-        const precioUnitario = producto.precio / (unidadAlmacen * parseFloat(producto.cantidad));
-        total += precioUnitario * (unidadIngrediente * item.cantidad);
+        const p = almacen.find(x => String(x.codigo)===String(item.codigo));
+        if(!p) return;
+        const uAl = FACTORES[p.unidadDeMedida.toLowerCase().trim()];
+        const uIn = FACTORES[item.unidad.toLowerCase().trim()];
+        const precioUnit = p.precio/(uAl*parseFloat(p.cantidad));
+        total += precioUnit * (uIn*item.cantidad);
       });
-
-      return parseFloat(total.toFixed(2));
+      return +total.toFixed(2);
     }
-
     function aplicarMargen(costo) {
-      return parseFloat((costo * CONFIG.MARGEN).toFixed(2));
+      return +(costo * MARGEN).toFixed(2);
     }
 
-    // Estado global
-    const STORAGE_KEY_TABLES = 'pv_tables';
-    let recetas = [];
-    let categorias = [];
-    let tables = JSON.parse(localStorage.getItem(STORAGE_KEY_TABLES) || '[]');
+    // ---------- Inicialización ----------
+    window.onload = async () => {
+      actualizarReloj();
+      setInterval(actualizarReloj,1000);
+      await cargarDatos();
+      renderMesas();
+      document.getElementById('clientes-activos').textContent = mesas.filter(m => m.estado === 'ocupada').length;
+    };
 
-    let selectedTableId = null;
-    let selectedSubId = null;
-    let selectedCat = '';
-
-    // Modal DOM
-    const modalOverlay = document.getElementById('modalOverlay');
-    const modalBody = document.getElementById('modalBody');
-    const btnCancel = document.getElementById('modalCancel');
-    const btnConfirm = document.getElementById('modalConfirm');
-    btnCancel.addEventListener('click', closeModal);
-
-    function closeModal() {
-      modalOverlay.style.display = 'none';
-    }
-
-    // Inicialización y refresco de datos
-    async function fetchYRefresh() {
-      inicialRender();
+    async function cargarDatos() {
+      // Obtener inventario y recetas costeadas
       try {
         const almacen = await apiFetch('obtenerAlmacen');
-        localStorage.setItem(CONFIG.STORAGE_KEYS.ALMACEN, JSON.stringify(almacen));
-
+        localStorage.setItem(STORAGE_KEYS.ALMACEN, JSON.stringify(almacen));
         const cocina = await apiFetch('obtenerCocina');
-        localStorage.setItem(CONFIG.STORAGE_KEYS.COSTEADAS, JSON.stringify(cocina));
-      } catch (error) {
-        console.error(error);
-      }
-      inicialRender();
-    }
+        localStorage.setItem(STORAGE_KEYS.COSTEADAS, JSON.stringify(cocina));
 
-    function inicialRender() {
-      const costeadas = JSON.parse(localStorage.getItem(CONFIG.STORAGE_KEYS.COSTEADAS) || '[]');
-      recetas = costeadas.map(r => ({
-        ...r,
-        precio: aplicarMargen(calcularCosto(r.ingredientes))
-      }));
-
-      categorias = [...new Set(recetas.map(r => r.categoria).filter(c => c))].sort();
-
-      renderCategorias();
-      renderRecetas();
-      renderTables();
-      updateStatusBar();
-    }
-
-    function updateStatusBar() {
-      document.getElementById('active-tables').textContent = tables.length;
-      document.getElementById('product-count').textContent = recetas.length;
-      document.getElementById('category-count').textContent = categorias.length;
-    }
-
-    // Renderizado UI
-    function renderCategorias() {
-      const nav = document.getElementById('categories');
-      const btnTodas = `<button class="${selectedCat === '' ? 'active' : ''}" onclick="selectCategory('')">Todas</button>`;
-      const btnCats = categorias.map(c => `
-        <button class="${selectedCat === c ? 'active' : ''}" onclick="selectCategory('${c}')">
-          ${c}
-        </button>
-      `).join('');
-      nav.innerHTML = btnTodas + btnCats;
-    }
-
-    function renderRecetas() {
-      const container = document.getElementById('recetas-cards');
-      const filtradas = recetas.filter(r => !selectedCat || r.categoria === selectedCat);
-      
-      const cards = filtradas.map(r => {
-        const precioFormateado = r.precio.toLocaleString('es-MX', {
-          style: 'currency',
-          currency: 'MXN'
-        });
+        // Calcular precios y categorizar
+        const costeadas = JSON.parse(localStorage.getItem(STORAGE_KEYS.COSTEADAS) || '[]');
+        recetas = costeadas.map(r => ({
+          ...r,
+          precio: aplicarMargen(calcularCosto(r.ingredientes))
+        }));
         
-        return `
-          <div class="product-card">
-            <div class="product-image">
-              ${r.imagen
-                ? `<img src="${r.imagen}" alt="${r.nombre}">`
-                : `<div style="display: flex; align-items: center; justify-content: center; height: 100%; background: #f0f2f5; border-radius: 10px;"><i class="fas fa-utensils"></i></div>`}
-              <div class="product-info">
-                <div class="product-name">${r.nombre}</div>
-                <div class="product-price">${precioFormateado}</div>
+        // Extraer categorías únicas
+        categorias = [...new Set(recetas.map(r => r.categoria))].filter(c => c).sort();
+        
+        // Renderizar categorías y productos
+        renderCategorias();
+        renderProductos();
+        
+        mostrarNotificacion("Datos cargados correctamente", true);
+      } catch (e) {
+        mostrarNotificacion("Error al cargar datos: " + e.message, false);
+      }
+    }
+
+    // ---------- Funciones para categorías ----------
+    function renderCategorias() {
+      const cont = document.getElementById('categorias-container');
+      cont.innerHTML = '';
+      
+      // Botón "Todas"
+      const btnTodas = document.createElement('button');
+      btnTodas.innerHTML = '<i class="fas fa-list"></i> Todas';
+      if(!categoriaSeleccionada) btnTodas.classList.add('active');
+      btnTodas.onclick = () => {
+        categoriaSeleccionada = '';
+        renderCategorias();
+        renderProductos();
+      };
+      cont.appendChild(btnTodas);
+      
+      // Botones para cada categoría
+      categorias.forEach(cat => {
+        const btn = document.createElement('button');
+        btn.innerHTML = `<i class="fas fa-tag"></i> ${cat}`;
+        if(categoriaSeleccionada === cat) btn.classList.add('active');
+        btn.onclick = () => {
+          categoriaSeleccionada = cat;
+          renderCategorias();
+          renderProductos();
+        };
+        cont.appendChild(btn);
+      });
+    }
+    
+    // ---------- Renderizado Mesas ----------
+    function renderMesas() {
+      const c = document.getElementById('mesas-container');
+      c.innerHTML = mesas.length===0
+        ? '<p class="text-center py-4">No hay mesas</p>'
+        : mesas.map(m=>`
+            <div class="mesa ${m.estado}" onclick="seleccionarMesa(${m.id})">
+              <div class="mesa-number">${m.numero}</div>
+              <div class="mesa-capacity">${m.capacidad} personas</div>
+              <div class="mesa-actions">
+                <button onclick="editarMesa(event,${m.id})"><i class="fas fa-edit"></i></button>
+                <button onclick="eliminarMesa(event,${m.id})"><i class="fas fa-trash"></i></button>
               </div>
             </div>
-            
-            <div class="product-actions">
-              <input
-                type="number"
-                min="1"
-                value="1"
-                id="qty-${r.codigo}"
-                class="qty-input"
-              >
-              <button
-                class="add-btn"
-                onclick="addItem('${r.codigo}')"
-              >
-                <i class="fas fa-plus"></i> Añadir
-              </button>
-            </div>
-          </div>
-        `;
-      }).join('');
-      
-      container.innerHTML = cards;
+          `).join('');
+      document.getElementById('mesas-disponibles').textContent =
+        mesas.filter(m=>m.estado==='disponible').length;
     }
 
-    function renderTables() {
-      const barContainer = document.getElementById('tables-bar');
-      const listContainer = document.getElementById('tables-list');
+    function mostrarModalMesa(id) {
+      const modal = document.getElementById('modal-mesa');
+      const m = mesas.find(x=>x.id===id);
+      document.getElementById('titulo-mesa').textContent = m?'Editar Mesa':'Nueva Mesa';
+      document.getElementById('input-mesa-numero').value = m?m.numero:'';
+      document.getElementById('input-mesa-capacidad').value = m?m.capacidad:'';
+      modal.classList.remove('hidden');
+      modal.dataset.editId = m ? m.id : '';
+    }
+    function cerrarModalMesa() {
+      document.getElementById('modal-mesa').classList.add('hidden');
+    }
+    function guardarMesa() {
+      const num = +document.getElementById('input-mesa-numero').value;
+      const cap = +document.getElementById('input-mesa-capacidad').value;
+      const editId = document.getElementById('modal-mesa').dataset.editId;
+      if(!num||!cap) return mostrarNotificacion("Datos inválidos", false);
+      if(editId) {
+        mesas = mesas.map(m=> m.id==editId ? {...m,numero:num,capacidad:cap} : m );
+      } else {
+        const id = Date.now();
+        mesas.push({ 
+          id, 
+          numero:num, 
+          capacidad:cap, 
+          estado:'disponible', 
+          subs:[{ id:1, name:'General', cart:[] }] 
+        });
+      }
+      persistMesas();
+      cerrarModalMesa();
+      renderMesas();
+    }
+    function editarMesa(e,id){ e.stopPropagation(); mostrarModalMesa(id); }
+    function eliminarMesa(e,id){
+      e.stopPropagation();
+      mesas = mesas.filter(x=>x.id!==id);
+      persistMesas();
+      renderMesas();
+    }
+
+    function persistMesas(){
+      localStorage.setItem(STORAGE_KEYS.MESAS, JSON.stringify(mesas));
+    }
+
+    // ---------- Selección de Mesa y Menú ----------
+    function seleccionarMesa(id) {
+      mesaSel = id;
+      const m = mesas.find(x=>x.id===id);
+      m.estado='ocupada';
+      persistMesas();
+      renderMesas();
+      // cambiar vista
+      document.getElementById('mesas-view').classList.add('hidden');
+      document.getElementById('menu-view').classList.remove('hidden');
+      document.getElementById('pedido-mesa-numero').textContent = m.numero;
+      subActiva = m.subs[0].name;
+      renderSubcuentas();
+      renderPedido();
+      document.getElementById('clientes-activos').textContent = mesas.filter(m => m.estado === 'ocupada').length;
+    }
+    function volverAMesas() {
+      document.getElementById('menu-view').classList.add('hidden');
+      document.getElementById('mesas-view').classList.remove('hidden');
+    }
+
+    // ---------- Renderizado Menú y Productos ----------
+    function renderProductos() {
+      // Filtrar productos por categoría seleccionada
+      const productosFiltrados = categoriaSeleccionada 
+        ? recetas.filter(r => r.categoria === categoriaSeleccionada)
+        : recetas;
       
-      // Limpiar contenedores
-      barContainer.innerHTML = '';
-      listContainer.innerHTML = '';
-      
-      if (tables.length === 0) {
-        listContainer.innerHTML = `
-          <div class="no-tables">
-            <i class="fas fa-table"></i>
-            <h3>No hay mesas activas</h3>
-            <p>Agrega una nueva mesa para comenzar</p>
-            <button class="btn btn-primary" onclick="addTable()">
-              <i class="fas fa-plus"></i> Agregar Mesa
+      const c = document.getElementById('productos-container');
+      c.innerHTML = productosFiltrados.length === 0
+        ? '<p class="text-center py-4">No hay productos en esta categoría</p>'
+        : productosFiltrados.map(r => `
+            <div class="producto" onclick="agregarProd('${r.codigo}')">
+              <div class="producto-img-container">
+                ${r.imagen
+                  ? `<img src="${r.imagen}" alt="${r.nombre}">`
+                  : `<i class="fas fa-utensils fa-3x" style="color:#ddd;"></i>`}
+              </div>
+              <div class="producto-info">
+                <div class="producto-name">${r.nombre}</div>
+                <div class="producto-price">$${r.precio.toFixed(2)}</div>
+              </div>
+            </div>
+          `).join('');
+    }
+
+    // ---------- Subcuentas ----------
+    function renderSubcuentas() {
+      const m = mesas.find(x=>x.id===mesaSel);
+      document.getElementById('subcuentas-container').innerHTML =
+        m.subs.map(s=>`
+          <div class="sub-btn ${s.name===subActiva?'active':''}" onclick="setSub('${s.name}')">
+            ${s.name}
+            <button class="cobrar-btn" onclick="iniciarCobro('subcuenta', event, '${s.name}')">
+              <i class="fas fa-cash-register"></i>
             </button>
           </div>
-        `;
+        `).join('');
+    }
+    function addSubcuenta() {
+      const name = document.getElementById('input-nueva-subcuenta').value.trim();
+      if(!name) return mostrarNotificacion("Nombre vacío", false);
+      const m = mesas.find(x=>x.id===mesaSel);
+      m.subs.push({ id:Date.now(), name, cart:[] });
+      document.getElementById('input-nueva-subcuenta').value='';
+      persistMesas();
+      renderSubcuentas();
+    }
+    function setSub(name) {
+      subActiva = name;
+      renderSubcuentas();
+    }
+
+    // ---------- Pedido ----------
+    function agregarProd(codigo) {
+      const m = mesas.find(x => x.id === mesaSel);
+      const r = recetas.find(x => String(x.codigo) === String(codigo));
+      if (!r) return mostrarNotificacion("Producto no encontrado", false);
+      const nota = document.getElementById('input-nota').value.trim() || null;
+      let sub = m.subs.find(s => s.name === subActiva);
+      if (!sub) return;
+      
+      // SOLUCIÓN AL PROBLEMA DE IMPRESIÓN
+      // En lugar de incrementar un ítem existente, creamos siempre un nuevo ítem
+      // para evitar problemas al reimprimir
+      sub.cart.push({ 
+        id: Date.now().toString() + Math.floor(Math.random() * 1000).toString(),
+        codigo: r.codigo, 
+        nombre: r.nombre, 
+        precio: r.precio, 
+        qty: 1, 
+        nota,
+        printed: false // Nuevo producto, no impreso
+      });
+      
+      document.getElementById('input-nota').value = '';
+      persistMesas();
+      renderPedido();
+      mostrarNotificacion(`${r.nombre} agregado a ${subActiva}`, true);
+    }
+    
+    function renderPedido() {
+      const m = mesas.find(x => x.id === mesaSel);
+      // Incluimos el nombre de la subcuenta en cada ítem
+      const items = m.subs.flatMap(s => s.cart.map(i => ({ ...i, subName: s.name })));
+      document.getElementById('pedido-items').innerHTML =
+        items.length === 0
+          ? '<p class="text-center py-4">Sin productos</p>'
+          : items.map((i, idx) => `
+            <div class="pedido-item${i.canceled ? ' canceled' : ''}">
+              <div class="pedido-item-info">
+                <div class="pedido-item-name">${i.nombre} 
+                  ${i.printed ? '<span class="printed-indicator">(Impreso)</span>' : '<span class="reprint-indicator">(No impreso)</span>'}
+                </div>
+                <div class="pedido-item-sub">Subcuenta: ${i.subName}</div>
+                ${i.nota ? `<div class="pedido-item-note">Nota: ${i.nota}</div>` : ''}
+                <div class="print-status">
+                  ${i.printed ? 'Impreso' : 'Pendiente de impresión'}
+                </div>
+              </div>
+              <div class="pedido-item-actions">
+                <button class="btn btn-sm btn-outline" onclick="modifyQuantity(${idx}, -1)"><i class="fas fa-minus"></i></button>
+                <div class="pedido-item-quantity">${i.qty}</div>
+                <button class="btn btn-sm btn-outline" onclick="modifyQuantity(${idx}, 1)"><i class="fas fa-plus"></i></button>
+                <div class="print-controls">
+                  <button class="reprint-btn" onclick="reimprimirItem('${i.id}')" title="Reimprimir">
+                    <i class="fas fa-print"></i> Reimprimir
+                  </button>
+                  <button class="btn btn-sm btn-outline" onclick="toggleCancel(${idx})">${i.canceled ? '<i class="fas fa-undo"></i>' : '<i class="fas fa-times"></i>'}</button>
+                </div>
+              </div>
+            </div>
+          `).join('');
+
+      const total = items.filter(i => !i.canceled).reduce((sum, i) => sum + i.precio * i.qty, 0);
+      document.getElementById('pedido-total').textContent = `$${total.toFixed(2)}`;
+      document.getElementById('btn-cobrar-todo').disabled = items.filter(i => !i.canceled).length === 0;
+    }
+
+    function modifyQuantity(idx, change) {
+      const m = mesas.find(x => x.id === mesaSel);
+      const items = m.subs.flatMap(s => s.cart);
+      items[idx].qty += change;
+      if (items[idx].qty <= 0) items.splice(idx, 1);
+      persistMesas();
+      renderPedido();
+    }
+
+    function toggleCancel(idx) {
+      const m = mesas.find(x => x.id === mesaSel);
+      const items = m.subs.flatMap(s => s.cart);
+      items[idx].canceled = !items[idx].canceled;
+      persistMesas();
+      renderPedido();
+    }
+    
+    function limpiarPedido() {
+      if (!confirm('¿Está seguro que desea limpiar todo el pedido?')) return;
+      
+      const m = mesas.find(x => x.id === mesaSel);
+      m.subs.forEach(sub => {
+        sub.cart = [];
+      });
+      
+      persistMesas();
+      renderPedido();
+      mostrarNotificacion("Pedido limpiado", true);
+    }
+
+    // ---------- Sistema de impresión de comanderas ----------
+    function imprimirComandera() {
+      const m = mesas.find(x => x.id === mesaSel);
+      if (!m) return;
+      
+      comanderaItems = [];
+      
+      // Recopilar todos los productos no impresos de todas las subcuentas
+      m.subs.forEach(sub => {
+        sub.cart.forEach(item => {
+          if (!item.printed && !item.canceled) {
+            comanderaItems.push({
+              ...item,
+              subName: sub.name
+            });
+          }
+        });
+      });
+      
+      if (comanderaItems.length === 0) {
+        mostrarNotificacion("No hay productos nuevos para imprimir", false);
         return;
       }
       
-      // Renderizar botones de mesas
-      tables.forEach(table => {
-        const button = document.createElement('button');
-        button.className = `table-btn ${table.id === selectedTableId ? 'active' : ''}`;
-        button.textContent = table.name;
-        button.onclick = () => selectTable(table.id);
-        barContainer.appendChild(button);
+      // Mostrar vista previa de comandera
+      document.getElementById('comandera-mesa').textContent = m.numero;
+      const now = new Date();
+      document.getElementById('comandera-fecha').textContent = now.toLocaleDateString('es-ES');
+      document.getElementById('comandera-hora').textContent = now.toLocaleTimeString('es-ES');
+      
+      // Agrupar por subcuenta
+      const itemsPorSubcuenta = {};
+      comanderaItems.forEach(item => {
+        if (!itemsPorSubcuenta[item.subName]) {
+          itemsPorSubcuenta[item.subName] = [];
+        }
+        itemsPorSubcuenta[item.subName].push(item);
       });
       
-      // Si hay una mesa seleccionada, renderizar su detalle
-      if (selectedTableId !== null) {
-        const table = tables.find(t => t.id === selectedTableId);
-        if (table) {
-          renderTableDetail(table, listContainer);
+      let comanderaHTML = '';
+      Object.keys(itemsPorSubcuenta).forEach(subName => {
+        comanderaHTML += `<div class="comandera-subcuenta">Subcuenta: ${subName}</div>`;
+        itemsPorSubcuenta[subName].forEach(item => {
+          comanderaHTML += `
+            <div class="comandera-item">
+              <div>${item.nombre} x ${item.qty}</div>
+              ${item.nota ? `<div class="comandera-note">Nota: ${item.nota}</div>` : ''}
+            </div>
+          `;
+        });
+      });
+      
+      document.getElementById('comandera-items-container').innerHTML = comanderaHTML;
+      document.getElementById('comandera-preview').classList.remove('hidden');
+    }
+    
+    function reimprimirItem(id) {
+      const m = mesas.find(x => x.id === mesaSel);
+      if (!m) return;
+      
+      // Buscar el ítem en todas las subcuentas
+      for (const sub of m.subs) {
+        const item = sub.cart.find(i => i.id === id);
+        if (item && !item.canceled) {
+          comanderaItems = [{
+            ...item,
+            subName: sub.name
+          }];
+          
+          // Mostrar vista previa de comandera
+          document.getElementById('comandera-mesa').textContent = m.numero;
+          const now = new Date();
+          document.getElementById('comandera-fecha').textContent = now.toLocaleDateString('es-ES');
+          document.getElementById('comandera-hora').textContent = now.toLocaleTimeString('es-ES');
+          
+          document.getElementById('comandera-items-container').innerHTML = `
+            <div class="comandera-subcuenta">Subcuenta: ${sub.name}</div>
+            <div class="comandera-item">
+              <div>${item.nombre} x ${item.qty}</div>
+              ${item.nota ? `<div class="comandera-note">Nota: ${item.nota}</div>` : ''}
+            </div>
+          `;
+          
+          document.getElementById('comandera-preview').classList.remove('hidden');
+          return;
         }
       }
+      
+      mostrarNotificacion("Producto no encontrado", false);
     }
-
-    function renderTableDetail(table, container) {
-      const totalMesa = table.subs
-        .flatMap(s => s.cart)
-        .reduce((sum, i) => sum + i.precio * i.qty, 0);
-        
-      const totalFormateado = totalMesa.toLocaleString('es-MX', {
-        style: 'currency',
-        currency: 'MXN'
+    
+    function cerrarComanderaPreview() {
+      document.getElementById('comandera-preview').classList.add('hidden');
+    }
+    
+    function imprimirComanderaReal() {
+      // Simulación de impresión
+      const m = mesas.find(x => x.id === mesaSel);
+      if (!m) return;
+      
+      // Marcar los productos como impresos
+      comanderaItems.forEach(comItem => {
+        for (const sub of m.subs) {
+          const item = sub.cart.find(i => i.id === comItem.id);
+          if (item) {
+            item.printed = true;
+          }
+        }
       });
       
-      const subs = table.subs.map(sub => {
-        const totalSub = sub.cart
-          .reduce((sum, i) => sum + i.precio * i.qty, 0);
-          
-        const totalSubFormateado = totalSub.toLocaleString('es-MX', {
-          style: 'currency',
-          currency: 'MXN'
-        });
-        
-        const isSubSelected = selectedSubId === sub.id;
-        const subSelectedClass = isSubSelected ? 'selected' : '';
-        
-        return `
-          <div
-            class="sub-account ${subSelectedClass}"
-            onclick="event.stopPropagation(); selectSub(${table.id}, ${sub.id})"
-          >
-            <span class="sub-name">${sub.name}</span>
-            <span class="sub-total">${totalSubFormateado}</span>
-            <div class="sub-controls">
-              <button
-                class="btn btn-sm btn-edit"
-                onclick="event.stopPropagation(); editSub(${table.id}, ${sub.id})"
-                title="Editar subcuenta"
-              >
-                <i class="fas fa-edit"></i>
-              </button>
-              <button
-                class="btn btn-sm btn-confirm"
-                onclick="event.stopPropagation(); chargeSub(${table.id}, ${sub.id})"
-                title="Cobrar subcuenta"
-              >
-                <i class="fas fa-cash-register"></i>
-              </button>
-            </div>
-          </div>
-        `;
+      persistMesas();
+      renderPedido();
+      cerrarComanderaPreview();
+      mostrarNotificacion("Comandera enviada a impresión", true);
+      
+      // En un entorno real, aquí se enviaría a la impresora
+      // window.print(); // Para impresión real del navegador
+    }
+
+    // ---------- Modal de Cobro ----------
+    function iniciarCobro(tipo, e = null, nombreSubcuenta = null) {
+      if (e) e.stopPropagation();
+      
+      const m = mesas.find(x => x.id === mesaSel);
+      let items = [];
+      let titulo = "";
+      
+      if (tipo === 'subcuenta') {
+        const sub = m.subs.find(s => s.name === nombreSubcuenta);
+        items = [...sub.cart];
+        titulo = `Cobrar Subcuenta: ${nombreSubcuenta}`;
+      } else if (tipo === 'todo') {
+        items = m.subs.flatMap(s => s.cart);
+        titulo = `Cobrar Mesa: ${m.numero}`;
+      }
+      
+      // Filtrar items cancelados
+      items = items.filter(i => !i.canceled);
+      
+      if (items.length === 0) {
+        mostrarNotificacion("No hay items para cobrar", false);
+        return;
+      }
+      
+      // Configurar el cobro actual
+      cobroActual = {
+        tipo,
+        items,
+        cuentaName: tipo === 'subcuenta' ? nombreSubcuenta : m.numero,
+        callback: tipo === 'subcuenta' 
+          ? () => eliminarSubcuenta(m, nombreSubcuenta) 
+          : () => eliminarMesaCompleta(m)
+      };
+      
+      // Configurar el modal
+      document.getElementById('titulo-cobro').textContent = titulo;
+      
+      const container = document.getElementById('cobro-items-container');
+      container.innerHTML = items.map(i => {
+        const subtotal = (i.precio * i.qty).toFixed(2);
+        return `<li>${i.nombre} <span>x${i.qty}</span> <span>$${subtotal}</span></li>`;
       }).join('');
       
-      const html = `
-        <div class="table-item">
-          <div class="table-header">
-            <div class="table-title">
-              <i class="fas fa-table"></i> ${table.name}
-            </div>
-            <div class="table-header-controls">
-              <div class="table-total">${totalFormateado}</div>
-              <button
-                class="btn btn-sm btn-edit"
-                onclick="event.stopPropagation(); editTable(${table.id})"
-                title="Editar mesa"
-              >
-                <i class="fas fa-edit"></i>
-              </button>
-              <button
-                class="btn btn-sm btn-charge-all"
-                onclick="event.stopPropagation(); chargeTable(${table.id})"
-                title="Cobrar mesa completa"
-              >
-                <i class="fas fa-cash-register"></i> Cobrar Todo
-              </button>
-            </div>
-          </div>
-          <div class="table-body">
-            <div class="sub-accounts">
-              ${subs}
-            </div>
-          </div>
-          <div class="table-footer">
-            <button
-              class="btn btn-sm add-sub-btn"
-              onclick="addSub(${table.id})"
-            >
-              <i class="fas fa-plus"></i> Subcuenta
-            </button>
-          </div>
-        </div>
-      `;
+      const total = items.reduce((sum, i) => sum + i.precio * i.qty, 0).toFixed(2);
+      document.getElementById('cobro-total').textContent = `$${total}`;
       
-      container.innerHTML = html;
+      // Mostrar modal
+      document.getElementById('modal-cobro').classList.remove('hidden');
     }
-
-    // Interacciones
-    function selectCategory(categoria) {
-      selectedCat = categoria;
-      renderCategorias();
-      renderRecetas();
+    
+    function cerrarModalCobro() {
+      document.getElementById('modal-cobro').classList.add('hidden');
+      cobroActual = {
+        items: [],
+        tipo: null,
+        cuentaName: null,
+        callback: null
+      };
     }
-
-    function selectTable(id) {
-      selectedTableId = selectedTableId === id ? null : id;
-      selectedSubId = null;
-      renderTables();
-      renderRecetas();
-    }
-
-    function selectSub(tableId, subId) {
-      selectedTableId = tableId;
-      selectedSubId = subId;
-      renderTables();
-      renderRecetas();
-    }
-
-    function addItem(codigo) {
-      const qty = parseInt(
-        document.getElementById(`qty-${codigo}`).value,
-        10
-      ) || 1;
-
-      if (!selectedTableId || !selectedSubId) {
-        return alert('Selecciona mesa y subcuenta');
-      }
-
-      const table = tables.find(t => t.id === selectedTableId);
-      const sub = table.subs.find(s => s.id === selectedSubId);
-      const receta = recetas.find(r => String(r.codigo) === String(codigo));
-
-      if (!receta) {
-        return alert('Producto no encontrado');
-      }
-
-      const existing = sub.cart.find(
-        item => String(item.codigo) === String(codigo)
-      );
-
-      if (existing) {
-        existing.qty += qty;
-      } else {
-        sub.cart.push({
-          codigo: receta.codigo,
-          nombre: receta.nombre,
-          precio: receta.precio,
-          qty: qty
+    
+    async function confirmarCobro() {
+      if (!cobroActual.tipo || cobroActual.items.length === 0) return;
+      
+      const metodo = document.getElementById('pay-method').value;
+      const venta = {
+        fecha: new Date().toISOString(),
+        metodoPago: metodo,
+        items: cobroActual.items.map(i => ({
+          codigo: String(i.codigo),
+          cuenta: cobroActual.cuentaName,
+          producto: i.nombre,
+          cantidad: i.qty,
+          total: +(i.precio * i.qty).toFixed(2)
+        }))
+      };
+      
+      try {
+        await apiFetch('guardarVentas', {
+          venta: JSON.stringify(venta),
+          metodoPago: metodo
         });
+        
+        // Actualizar ventas hoy
+        const totalVenta = cobroActual.items.reduce((sum, i) => sum + i.precio * i.qty, 0);
+        ventasHoy += totalVenta;
+        actualizarReloj();
+        
+        // Ejecutar callback para limpiar mesa/subcuenta
+        cobroActual.callback();
+        
+        // Cerrar modal y mostrar notificación
+        cerrarModalCobro();
+        mostrarNotificacion(`Cobro registrado exitosamente con ${metodo}`, true);
+      } catch (err) {
+        mostrarNotificacion('Error al guardar la venta: ' + err.message, false);
       }
-
-      saveAndRefresh();
     }
-
-    // CRUD Mesas / Subcuentas / Cobro
-    function addTable() {
-      openModal('table-add', { title: 'Nueva Mesa' });
-    }
-
-    function editTable(id) {
-      const mesa = tables.find(t => t.id === id);
-      openModal('table-add', {
-        title: 'Editar Mesa',
-        id: id,
-        name: mesa.name
-      });
-    }
-
-    function addSub(tableId) {
-      openModal('sub-add', { title: 'Nueva Subcuenta', tableId: tableId });
-    }
-
-    function editSub(tableId, subId) {
-      const mesa = tables.find(t => t.id === tableId);
-      const sub = mesa.subs.find(s => s.id === subId);
-      openModal('sub-add', {
-        title: 'Editar Subcuenta',
-        tableId: tableId,
-        subId: subId,
-        name: sub.name
-      });
-    }
-
-    function chargeTable(tableId) {
-      const items = tables
-        .find(t => t.id === tableId)
-        .subs.flatMap(s => s.cart);
-
-      openModal('charge', {
-        title: 'Cobrar Mesa',
-        tableId: tableId,
-        items: items,
-        full: true
-      });
-    }
-
-    function chargeSub(tableId, subId) {
-      const sub = tables
-        .find(t => t.id === tableId)
-        .subs.find(s => s.id === subId);
-
-      openModal('charge', {
-        title: 'Cobrar Subcuenta',
-        tableId: tableId,
-        subId: subId,
-        items: sub.cart,
-        full: false
-      });
-    }
-
-    function openModal(type, opts) {
-      modalBody.innerHTML = '';
-      btnConfirm.onclick = null;
-
-      switch (type) {
-        case 'table-add':
-          modalBody.innerHTML = `
-            <div class="modal-header">
-              <h3 class="modal-title">${opts.title}</h3>
-            </div>
-            <div class="modal-body">
-              <input
-                id="modalInput"
-                class="modal-input"
-                placeholder="Nombre de mesa"
-                value="${opts.name || ''}"
-              >
-            </div>
-          `;
-          btnConfirm.onclick = () => {
-            const name = document
-              .getElementById('modalInput')
-              .value.trim();
-            if (!name) return alert('Ingrese nombre');
-
-            if (opts.id == null) {
-              const newId = tables.length
-                ? Math.max(...tables.map(t => t.id)) + 1
-                : 1;
-              tables.push({ id: newId, name: name, subs: [] });
-              selectedTableId = newId; // Seleccionar nueva mesa
-            } else {
-              tables.find(t => t.id === opts.id).name = name;
-            }
-
-            saveAndRefresh();
-            closeModal();
-          };
-          break;
-
-        case 'sub-add':
-          modalBody.innerHTML = `
-            <div class="modal-header">
-              <h3 class="modal-title">${opts.title}</h3>
-            </div>
-            <div class="modal-body">
-              <input
-                id="modalInput"
-                class="modal-input"
-                placeholder="Nombre de subcuenta"
-                value="${opts.name || ''}"
-              >
-            </div>
-          `;
-          btnConfirm.onclick = () => {
-            const name = document
-              .getElementById('modalInput')
-              .value.trim();
-            if (!name) return alert('Ingrese nombre');
-
-            const mesa = tables.find(t => t.id === opts.tableId);
-            if (opts.subId == null) {
-              const newId = mesa.subs.length
-                ? Math.max(...mesa.subs.map(s => s.id)) + 1
-                : 1;
-              mesa.subs.push({ id: newId, name: name, cart: [] });
-              selectedSubId = newId; // Seleccionar nueva subcuenta
-            } else {
-              mesa.subs.find(s => s.id === opts.subId).name = name;
-            }
-
-            saveAndRefresh();
-            closeModal();
-          };
-          break;
-
-        case 'charge':
-          const total = opts.items
-            .reduce((sum, i) => sum + i.precio * i.qty, 0)
-            .toFixed(2);
-            
-          const totalFormateado = parseFloat(total).toLocaleString('es-MX', {
-            style: 'currency',
-            currency: 'MXN'
-          });
-
-          modalBody.innerHTML = `
-            <div class="modal-header">
-              <h3 class="modal-title">${opts.title}</h3>
-            </div>
-            <div class="modal-body">
-              <ul class="modal-list">
-                ${opts.items
-                  .map(
-                    i => {
-                      const precio = (i.precio * i.qty).toFixed(2);
-                      const precioFormateado = parseFloat(precio).toLocaleString('es-MX', {
-                        style: 'currency',
-                        currency: 'MXN'
-                      });
-                      return `<li>${i.nombre} x${i.qty} — ${precioFormateado}</li>`;
-                    }
-                  )
-                  .join('')}
-              </ul>
-              <div class="modal-total">Total: <span>${totalFormateado}</span></div>
-              <p>
-                ${opts.full
-                  ? 'Se cobrará toda la mesa con todas sus subcuentas.'
-                  : 'Solo esta subcuenta será cobrada.'}
-              </p>
-              <select id="modalPay" class="modal-select">
-                <option>Efectivo</option>
-                <option>Tarjeta</option>
-                <option>Transferencia</option>
-              </select>
-            </div>
-          `;
-
-          btnConfirm.onclick = () => {
-            const metodo = document.getElementById('modalPay').value;
-            // Construir objeto de venta igual al original
-            const venta = {
-              fecha: new Date().toISOString(),
-              metodoPago: metodo,
-              items: opts.items.map(i => ({
-                codigo: String(i.codigo),
-                producto: i.nombre,
-                cantidad: i.qty,
-                total: +(i.precio * i.qty).toFixed(2)
-              }))
-            };
-
-            apiFetch('guardarVentas', { venta: JSON.stringify(venta), metodoPago: metodo })
-              .then(() => {
-                if (opts.full) {
-                  // CORRECCIÓN: Eliminar solo la mesa cobrada
-                  tables = tables.filter(t => t.id !== opts.tableId);
-                } else {
-                  const mesa = tables.find(t => t.id === opts.tableId);
-                  mesa.subs = mesa.subs.filter(s => s.id !== opts.subId);
-                  if (!mesa.subs.length) {
-                    tables = tables.filter(t => t.id !== opts.tableId);
-                  }
-                }
-                
-                // Deseleccionar mesa actual si fue cobrada
-                if (selectedTableId === opts.tableId) {
-                  selectedTableId = null;
-                  selectedSubId = null;
-                }
-                
-                saveAndRefresh();
-                closeModal();
-                alert('Cobro registrado exitosamente');
-              })
-              .catch(err => {
-                console.error('Error al guardar venta:', err);
-                alert('Error al guardar la venta: ' + err);
-              });
-          };
-          break;
-        }
-
-      modalOverlay.style.display = 'grid';
-    }
-
-    // Funcionalidad de teclado
-    let activeInput = null;
-
-    document.addEventListener('focusin', (e) => {
-      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
-        activeInput = e.target;
+    
+    function eliminarSubcuenta(mesa, nombreSubcuenta) {
+      // Eliminar la subcuenta cobrada
+      mesa.subs = mesa.subs.filter(s => s.name !== nombreSubcuenta);
+      
+      // Si no quedan subcuentas, eliminar la mesa
+      if (mesa.subs.length === 0) {
+        mesas = mesas.filter(x => x.id !== mesaSel);
+        volverAMesas();
       }
-    });
-
-    const keys = [
-      '1','2','3','4','5','6','7','8','9','0',
-      'Q','W','E','R','T','Y','U','I','O','P',
-      'A','S','D','F','G','H','J','K','L','Backspace',
-      'Z','X','C','V','B','N','M',',','.','Space'
-    ];
-
-    const keyboard = document.getElementById('keyboard');
-    keyboard.innerHTML = keys.map(key => {
-      const isWide = key === 'Backspace' || key === 'Space';
-      const label = key === 'Space' ? '␣' : (key === 'Backspace' ? '⌫' : key);
-      const action = key === 'Backspace'
-        ? "(()=> activeInput ? activeInput.value = activeInput.value.slice(0, -1) : null)()"
-        : key === 'Space'
-          ? "(()=> activeInput ? activeInput.value += ' ' : null)()"
-          : `(()=> activeInput ? activeInput.value += '${key}' : null)()`;
-      return `<button class="${isWide ? 'wide' : ''}" onclick="${action}">${label}</button>`;
-    }).join('');
-
-    function saveAndRefresh() {
-      localStorage.setItem(STORAGE_KEY_TABLES, JSON.stringify(tables));
-      renderTables();
-      renderRecetas();
-      updateStatusBar();
+      
+      persistMesas();
+      renderMesas();
+      renderSubcuentas();
+      renderPedido();
+      document.getElementById('clientes-activos').textContent = mesas.filter(m => m.estado === 'ocupada').length;
+    }
+    
+    function eliminarMesaCompleta(mesa) {
+      mesas = mesas.filter(x => x.id !== mesa.id);
+      persistMesas();
+      renderMesas(); 
+      volverAMesas();
+      document.getElementById('clientes-activos').textContent = mesas.filter(m => m.estado === 'ocupada').length;
     }
 
-    function goBack() {
-      selectedTableId = null;
-      selectedSubId = null;
-      renderTables();
-      renderRecetas();
+    // ---------- Reloj y notificaciones ----------
+    function actualizarReloj() {
+      document.getElementById('current-time').textContent =
+        new Date().toLocaleTimeString('es-ES');
+      document.getElementById('ventas-hoy').textContent =
+        `$${ventasHoy.toFixed(2)}`;
+    }
+    
+    function mostrarNotificacion(mensaje, esExito) {
+      const notif = document.getElementById('notification');
+      notif.innerHTML = `
+        <i class="fas ${esExito ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+        ${mensaje}
+      `;
+      notif.className = `notification ${esExito ? 'ok' : 'error'} show`;
+      setTimeout(() => {
+        notif.classList.remove('show');
+      }, 3000);
     }
 
-    // Exponer funciones al scope global
-    window.selectCategory = selectCategory;
-    window.selectTable = selectTable;
-    window.selectSub = selectSub;
-    window.addItem = addItem;
-    window.addTable = addTable;
-    window.editTable = editTable;
-    window.addSub = addSub;
-    window.editSub = editSub;
-    window.chargeTable = chargeTable;
-    window.chargeSub = chargeSub;
-    window.goBack = goBack;
-    window.fetchYRefresh = fetchYRefresh;
-
-    window.addEventListener('load', () => {
-      fetchYRefresh();
-      document.getElementById('add-table').addEventListener('click', addTable);
+    // Datos de ejemplo para demostración
+    document.addEventListener('DOMContentLoaded', function() {
+      // Crear mesas de ejemplo si no hay ninguna
+      if (mesas.length === 0) {
+        mesas = [];
+        persistMesas();
+        renderMesas();
+      }
+      
+      // Productos de ejemplo
+      if (recetas.length === 0) {
+        recetas = [];
+        categorias = [...new Set(recetas.map(r => r.categoria))].filter(c => c).sort();
+        renderCategorias();
+        renderProductos();
+      }
     });
   </script>
 </body>
