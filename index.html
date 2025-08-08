@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>POS IAEgo - Sistema Mejorado</title>
+  <title>POS IAEgo - Sistema de Categorías</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
   * { 
@@ -11,7 +11,6 @@
     margin: 0; 
     padding: 0; 
     font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
-    touch-action: manipulation;
   }
   
   :root {
@@ -40,8 +39,6 @@
     color: var(--text-dark); 
     line-height: 1.6;
     min-height: 100vh;
-    position: relative;
-    padding-bottom: 70px;
   }
   
   .container { 
@@ -265,7 +262,6 @@
   /* Diseño de dos columnas para menú y pedido */
   .menu-container { 
     display: grid; 
-    width: 100%;
     grid-template-columns: 3fr 2fr; 
     gap: 1.5rem;
   }
@@ -362,11 +358,13 @@
   /* Productos */
   .productos-grid { 
     display: grid; 
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
-    gap: 1.2rem; 
+
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    gap: 1rem; 
     height: 600px;
     overflow-y: auto;
     padding: 5px;
+    background: red;
   }
   
   .producto {
@@ -648,10 +646,10 @@
   .notification.ok i { color: var(--success); }
   .notification.error i { color: var(--danger); }
   
-  /* Scrollbar styling - MÁS GRUESAS */
+  /* Scrollbar styling */
   ::-webkit-scrollbar {
-    width: 16px;  /* Más grueso para fácil arrastre */
-    height: 16px; /* Más grueso para fácil arrastre */
+    width: 8px;
+    height: 8px;
   }
   
   ::-webkit-scrollbar-track {
@@ -660,17 +658,24 @@
   }
   
   ::-webkit-scrollbar-thumb {
-    background: var(--primary-light);
+    background: #c1c1c1;
     border-radius: 10px;
-    border: 4px solid #f1f1f1;
   }
   
   ::-webkit-scrollbar-thumb:hover {
-    background: var(--primary);
+    background: var(--primary-light);
   }
   
   /* Media queries para pantallas grandes */
-  
+  @media (min-width: 900px) {
+    .mesas-grid {
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    }
+    
+    .productos-grid {
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+  }
   
   @media (max-width: 800px) {
     .menu-container {
@@ -680,63 +685,19 @@
     .pedido-section {
       height: auto;
       max-height: 500px;
-      
     }
   }
   
   @media (max-width: 408px) {
     .stats-bar {
       flex-direction: column;
-      gap: 10px;
+      gap: 1rem;
       align-items: flex-start;
     }
     
     .mesas-grid {
-      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
     }
-    
-  .cobrar-section {
-   padding: 10px 6px;
-   gap: 5px;
- }
- 
- 
-   .btn {
-    cursor: pointer;
-    padding: 10px 10px;
-    font-size: 13px;
-    gap: 5px;
-  
-  }
-  
- 
-  .mesas-header {
-    display: grid;
-    margin-bottom: 1.5rem;
-  }
- 
-  .productos-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-    gap: 5px;
-    height: 200px;
-    
-    padding: 2px;
-  }
-    
-    .menu-container {
-      grid-template-columns: 1fr;
-      gap: 5px;
-    }
-  .subcuentas-section {
-
-  padding: 14px;
-
-  margin-bottom: 1rem;
-  grid-column: 5 / -4;
-}
-    
-    
   }
   
   /* Estilos para vista previa de comandera */
@@ -906,101 +867,12 @@
     font-size: 0.75rem;
     padding: 2px 5px;
   }
-  
-  /* Teclado virtual */
-  .virtual-keyboard {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: #f0f0f0;
-    padding: 10px;
-    z-index: 1000;
-    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-    display: grid;
-    grid-template-columns: repeat(10, 1fr);
-    gap: 5px;
-  }
-  
-  .keyboard-row {
-    display: flex;
-    justify-content: center;
-    gap: 5px;
-    width: 100%;
-    grid-column: span 10;
-  }
-  
-  .keyboard-key {
-    flex: 1;
-    min-width: 30px;
-    height: 40px;
-    background: white;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
-    touch-action: manipulation;
-    user-select: none;
-  }
-  
-  .keyboard-key:hover {
-    background: #e9e9e9;
-  }
-  
-  .keyboard-key:active {
-    background: #ddd;
-    transform: scale(0.95);
-  }
-  
-  .keyboard-key.space {
-    grid-column: span 3;
-    min-width: 100px;
-  }
-  
-  .keyboard-key.enter {
-    grid-column: span 2;
-    min-width: 70px;
-    background: var(--primary);
-    color: white;
-  }
-  
-  .keyboard-key.backspace {
-    background: var(--danger);
-    color: white;
-  }
-  
-  .keyboard-key.special {
-    background: #e0e0e0;
-  }
-  
-  .keyboard-close {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    background: none;
-    border: none;
-    font-size: 1.2rem;
-    cursor: pointer;
-    color: var(--primary);
-  }
-  
-  /* Bloquear teclado nativo */
-  .block-native-keyboard {
-    position: absolute;
-    top: -1000px;
-    left: -1000px;
-    opacity: 0;
-  }
   </style>
 </head>
 <body>
   <header>
     <div class="header-content">
-      <h1><i class="fas fa-cash-register"></i> POS IAEgo - Sistema Mejorado</h1>
+      <h1><i class="fas fa-cash-register"></i> POS IAEgo - Sistema de Impresión Mejorado</h1>
       <div class="header-actions">
         <button class="btn btn-outline">
           <i class="fas fa-cog"></i> Configuración
@@ -1055,7 +927,7 @@
           <button class="btn btn-outline" onclick="volverAMesas()">
             <i class="fas fa-arrow-left"></i> Volver a Mesas
           </button>
-          <input type="text" class="btn btn-outline" id="input-nueva-subcuenta" placeholder="Nueva subcuenta" readonly>
+          <input type="text" class="btn btn-outline" id="input-nueva-subcuenta" placeholder="Nueva subcuenta">
           <button class="btn btn-primary" onclick="addSubcuenta()">
             <i class="fas fa-plus"></i> Agregar
           </button>
@@ -1065,7 +937,7 @@
       </div>
       
       <div class="notas-section">
-        <input type="text" id="input-nota" placeholder="Nota para el producto" readonly>
+        <input type="text" id="input-nota" placeholder="Nota para el producto">
       </div>
 
       <!-- Sección de categorías -->
@@ -1114,9 +986,9 @@
       <div class="modal-header"><h3 id="titulo-mesa">Nueva Mesa</h3></div>
       <div class="modal-body">
         <label>Número:</label>
-        <input type="number" id="input-mesa-numero" min="1" readonly>
+        <input type="number" id="input-mesa-numero" min="1">
         <label>Capacidad:</label>
-        <input type="number" id="input-mesa-capacidad" min="1" readonly>
+        <input type="number" id="input-mesa-capacidad" min="1">
       </div>
       <div class="modal-footer">
         <button class="btn btn-outline" onclick="cerrarModalMesa()">Cancelar</button>
@@ -1126,7 +998,8 @@
   </div>
 
   <!-- Modal de Cobro -->
-  <div id="modal-cobro" class="modal hidden">
+ <!-- Modal de Cobro (modificado: ahora incluye inputs para código de empleado y código de cliente) -->
+<div id="modal-cobro" class="modal hidden">
     <div class="modal-content">
       <div class="modal-header">
         <h3 id="titulo-cobro">Cobrar</h3>
@@ -1136,6 +1009,17 @@
         <div class="cobro-total-display">
           Total: <span id="cobro-total">$0.00</span>
         </div>
+  
+        <!-- NUEVOS INPUTS -->
+        <label for="codigo-empleado">Códigos</label>
+        <div style="display: flex; gap: 5px;">
+            <input type="text" id="codigo-empleado" placeholder="Vendedor">
+            <input type="text" id="codigo-cliente" placeholder="Cliente">
+            <input type="text" id="codigo-descuento" placeholder="Descuento">
+        </div>
+
+
+  
         <label for="pay-method">Método de pago:</label>
         <select id="pay-method" class="modal-select">
           <option value="Efectivo">Efectivo</option>
@@ -1150,7 +1034,7 @@
       </div>
     </div>
   </div>
-
+  
   <!-- Vista previa de comandera -->
   <div id="comandera-preview" class="comandera-preview hidden">
     <span class="close" onclick="cerrarComanderaPreview()">&times;</span>
@@ -1167,65 +1051,6 @@
   </div>
 
   <div id="notification" class="notification"></div>
-
-  <!-- Teclado virtual -->
-  <div id="virtual-keyboard" class="virtual-keyboard hidden">
-    <button class="keyboard-close" onclick="toggleKeyboard()"><i class="fas fa-times"></i></button>
-    <div class="keyboard-row">
-      <div class="keyboard-key" data-key="1">1</div>
-      <div class="keyboard-key" data-key="2">2</div>
-      <div class="keyboard-key" data-key="3">3</div>
-      <div class="keyboard-key" data-key="4">4</div>
-      <div class="keyboard-key" data-key="5">5</div>
-      <div class="keyboard-key" data-key="6">6</div>
-      <div class="keyboard-key" data-key="7">7</div>
-      <div class="keyboard-key" data-key="8">8</div>
-      <div class="keyboard-key" data-key="9">9</div>
-      <div class="keyboard-key" data-key="0">0</div>
-    </div>
-    <div class="keyboard-row">
-      <div class="keyboard-key" data-key="q">q</div>
-      <div class="keyboard-key" data-key="w">w</div>
-      <div class="keyboard-key" data-key="e">e</div>
-      <div class="keyboard-key" data-key="r">r</div>
-      <div class="keyboard-key" data-key="t">t</div>
-      <div class="keyboard-key" data-key="y">y</div>
-      <div class="keyboard-key" data-key="u">u</div>
-      <div class="keyboard-key" data-key="i">i</div>
-      <div class="keyboard-key" data-key="o">o</div>
-      <div class="keyboard-key" data-key="p">p</div>
-    </div>
-    <div class="keyboard-row">
-      <div class="keyboard-key" data-key="a">a</div>
-      <div class="keyboard-key" data-key="s">s</div>
-      <div class="keyboard-key" data-key="d">d</div>
-      <div class="keyboard-key" data-key="f">f</div>
-      <div class="keyboard-key" data-key="g">g</div>
-      <div class="keyboard-key" data-key="h">h</div>
-      <div class="keyboard-key" data-key="j">j</div>
-      <div class="keyboard-key" data-key="k">k</div>
-      <div class="keyboard-key" data-key="l">l</div>
-      <div class="keyboard-key backspace" data-key="Backspace"><i class="fas fa-backspace"></i></div>
-    </div>
-    <div class="keyboard-row">
-      <div class="keyboard-key" data-key="z">z</div>
-      <div class="keyboard-key" data-key="x">x</div>
-      <div class="keyboard-key" data-key="c">c</div>
-      <div class="keyboard-key" data-key="v">v</div>
-      <div class="keyboard-key" data-key="b">b</div>
-      <div class="keyboard-key" data-key="n">n</div>
-      <div class="keyboard-key" data-key="m">m</div>
-      <div class="keyboard-key" data-key=",">,</div>
-      <div class="keyboard-key" data-key=".">.</div>
-      <div class="keyboard-key enter" data-key="Enter">Enter</div>
-    </div>
-    <div class="keyboard-row">
-      <div class="keyboard-key space" data-key=" ">Espacio</div>
-    </div>
-  </div>
-  
-  <!-- Input oculto para bloquear teclado nativo -->
-  <input type="text" id="block-native-keyboard" class="block-native-keyboard">
 
   <script>
     // ---------- Configuración y constantes ----------
@@ -1247,7 +1072,6 @@
     let subActiva = null;
     let ventasHoy = 0;
     let comanderaItems = [];
-    let activeInput = null;
     
     // Estado del modal de cobro
     let cobroActual = {
@@ -1292,21 +1116,6 @@
       await cargarDatos();
       renderMesas();
       document.getElementById('clientes-activos').textContent = mesas.filter(m => m.estado === 'ocupada').length;
-      
-      // Inicializar eventos del teclado virtual
-      document.querySelectorAll('.keyboard-key').forEach(key => {
-        key.addEventListener('click', () => {
-          handleVirtualKeyPress(key.dataset.key);
-        });
-      });
-      
-      // Configurar inputs para usar teclado virtual
-      document.querySelectorAll('input[readonly]').forEach(input => {
-        input.addEventListener('click', () => {
-          activeInput = input;
-          toggleKeyboard(true);
-        });
-      });
     };
 
     async function cargarDatos() {
@@ -1781,43 +1590,53 @@
     }
     
     async function confirmarCobro() {
-      if (!cobroActual.tipo || cobroActual.items.length === 0) return;
-      
-      const metodo = document.getElementById('pay-method').value;
-      const venta = {
-        fecha: new Date().toISOString(),
-        metodoPago: metodo,
-        items: cobroActual.items.map(i => ({
-          codigo: String(i.codigo),
-          cuenta: cobroActual.cuentaName,
-          producto: i.nombre,
-          cantidad: i.qty,
-          total: +(i.precio * i.qty).toFixed(2)
-        }))
-      };
-      
-      try {
-        await apiFetch('guardarVentas', {
-          venta: JSON.stringify(venta),
-          metodoPago: metodo
-        });
-        
-        // Actualizar ventas hoy
-        const totalVenta = cobroActual.items.reduce((sum, i) => sum + i.precio * i.qty, 0);
-        ventasHoy += totalVenta;
-        actualizarReloj();
-        
-        // Ejecutar callback para limpiar mesa/subcuenta
-        cobroActual.callback();
-        
-        // Cerrar modal y mostrar notificación
-        cerrarModalCobro();
-        mostrarNotificacion(`Cobro registrado exitosamente con ${metodo}`, true);
-      } catch (err) {
-        mostrarNotificacion('Error al guardar la venta: ' + err.message, false);
-      }
-    }
-    
+  if (!cobroActual.tipo || cobroActual.items.length === 0) return;
+
+  const metodo = document.getElementById('pay-method').value;
+  const codigoEmpleado = document.getElementById('codigo-empleado').value.trim();
+  const codigoCliente  = document.getElementById('codigo-cliente').value.trim();
+  const codigoDescuento = document.getElementById('codigo-descuento').value.trim();
+
+  // Arreglo con el objeto cliente/empleado — se guardará en una sola columna como JSON
+  const codigosArray = [{ cliente: codigoCliente, empleado: codigoEmpleado, descuento:codigoDescuento}];
+
+  const venta = {
+    fecha: new Date().toISOString(),
+    metodoPago: metodo,
+    // mantengo el mismo formato de items que ya tenías
+    items: cobroActual.items.map(i => ({
+      codigo: String(i.codigo),
+      cuenta: cobroActual.cuentaName,
+      producto: i.nombre,
+      cantidad: i.qty,
+      total: +(i.precio * i.qty).toFixed(2)
+    })),
+    // nuevo campo que tu backend ya acepta: codigosdeventa (array -> se guardará como JSON en la columna)
+    codigosdeventa: codigosArray
+  };
+
+  try {
+    await apiFetch('guardarVentas', {
+      venta: JSON.stringify(venta),
+      metodoPago: metodo
+    });
+
+    // Actualizar ventas hoy
+    const totalVenta = cobroActual.items.reduce((sum, i) => sum + i.precio * i.qty, 0);
+    ventasHoy += totalVenta;
+    actualizarReloj();
+
+    // Ejecutar callback (limpia subcuenta o mesa)
+    cobroActual.callback();
+
+    // Limpiar inputs y cerrar modal
+    cerrarModalCobro();
+    mostrarNotificacion(`Cobro registrado exitosamente con ${metodo}`, true);
+  } catch (err) {
+    mostrarNotificacion('Error al guardar la venta: ' + err.message, false);
+  }
+}
+
     function eliminarSubcuenta(mesa, nombreSubcuenta) {
       // Eliminar la subcuenta cobrada
       mesa.subs = mesa.subs.filter(s => s.name !== nombreSubcuenta);
@@ -1867,90 +1686,19 @@
     document.addEventListener('DOMContentLoaded', function() {
       // Crear mesas de ejemplo si no hay ninguna
       if (mesas.length === 0) {
-        mesas = [
-          { id: 1, numero: 1, capacidad: 4, estado: 'disponible', subs: [{ id:1, name:'General', cart:[] }] },
-          { id: 2, numero: 2, capacidad: 6, estado: 'disponible', subs: [{ id:1, name:'General', cart:[] }] },
-          { id: 3, numero: 3, capacidad: 2, estado: 'disponible', subs: [{ id:1, name:'General', cart:[] }] },
-          { id: 4, numero: 4, capacidad: 8, estado: 'ocupada', subs: [{ id:1, name:'General', cart:[] }] }
-        ];
+        mesas = [];
         persistMesas();
         renderMesas();
       }
       
       // Productos de ejemplo
       if (recetas.length === 0) {
-        recetas = [
-          { codigo: 'P001', nombre: 'Pizza Margarita', precio: 12.50, categoria: 'Pizzas', ingredientes: [] },
-          { codigo: 'P002', nombre: 'Pizza Pepperoni', precio: 14.00, categoria: 'Pizzas', ingredientes: [] },
-          { codigo: 'E001', nombre: 'Ensalada César', precio: 8.50, categoria: 'Ensaladas', ingredientes: [] },
-          { codigo: 'H001', nombre: 'Hamburguesa Clásica', precio: 10.00, categoria: 'Hamburguesas', ingredientes: [] },
-          { codigo: 'P003', nombre: 'Pasta Carbonara', precio: 11.50, categoria: 'Pastas', ingredientes: [] },
-          { codigo: 'B001', nombre: 'Agua Mineral', precio: 2.00, categoria: 'Bebidas', ingredientes: [] },
-          { codigo: 'B002', nombre: 'Refresco', precio: 3.00, categoria: 'Bebidas', ingredientes: [] },
-          { codigo: 'P004', nombre: 'Pizza Vegetariana', precio: 13.00, categoria: 'Pizzas', ingredientes: [] },
-          { codigo: 'P005', nombre: 'Pizza Hawaiana', precio: 13.50, categoria: 'Pizzas', ingredientes: [] },
-          { codigo: 'H002', nombre: 'Hamburguesa Doble', precio: 12.50, categoria: 'Hamburguesas', ingredientes: [] },
-          { codigo: 'H003', nombre: 'Hamburguesa Vegana', precio: 11.00, categoria: 'Hamburguesas', ingredientes: [] },
-          { codigo: 'E002', nombre: 'Ensalada Griega', precio: 9.00, categoria: 'Ensaladas', ingredientes: [] },
-          { codigo: 'P006', nombre: 'Pasta Bolognesa', precio: 12.00, categoria: 'Pastas', ingredientes: [] },
-          { codigo: 'P007', nombre: 'Lasagna', precio: 13.50, categoria: 'Pastas', ingredientes: [] },
-          { codigo: 'B003', nombre: 'Cerveza', precio: 4.50, categoria: 'Bebidas', ingredientes: [] },
-          { codigo: 'B004', nombre: 'Vino', precio: 6.00, categoria: 'Bebidas', ingredientes: [] },
-          { codigo: 'B005', nombre: 'Café', precio: 2.50, categoria: 'Bebidas', ingredientes: [] },
-          { codigo: 'D001', nombre: 'Helado', precio: 5.00, categoria: 'Postres', ingredientes: [] },
-          { codigo: 'D002', nombre: 'Tarta de Chocolate', precio: 6.50, categoria: 'Postres', ingredientes: [] },
-          { codigo: 'D003', nombre: 'Flan', precio: 4.50, categoria: 'Postres', ingredientes: [] }
-        ];
+        recetas = [];
         categorias = [...new Set(recetas.map(r => r.categoria))].filter(c => c).sort();
         renderCategorias();
         renderProductos();
       }
     });
-    
-    // ---------- Funciones para teclado virtual ----------
-    function toggleKeyboard(show) {
-      const keyboard = document.getElementById('virtual-keyboard');
-      if (show) {
-        keyboard.classList.remove('hidden');
-        // Enfocar el input oculto para bloquear teclado nativo
-        document.getElementById('block-native-keyboard').focus();
-      } else {
-        keyboard.classList.add('hidden');
-        activeInput = null;
-      }
-    }
-    
-    function handleVirtualKeyPress(key) {
-      if (!activeInput) return;
-      
-      const input = activeInput;
-      const currentValue = input.value;
-      const cursorPosition = input.selectionStart;
-      
-      switch (key) {
-        case 'Backspace':
-          if (cursorPosition > 0) {
-            input.value = currentValue.substring(0, cursorPosition - 1) + currentValue.substring(cursorPosition);
-            input.setSelectionRange(cursorPosition - 1, cursorPosition - 1);
-          }
-          break;
-        case 'Enter':
-          toggleKeyboard(false);
-          break;
-        case ' ':
-          input.value = currentValue.substring(0, cursorPosition) + ' ' + currentValue.substring(cursorPosition);
-          input.setSelectionRange(cursorPosition + 1, cursorPosition + 1);
-          break;
-        default:
-          input.value = currentValue.substring(0, cursorPosition) + key + currentValue.substring(cursorPosition);
-          input.setSelectionRange(cursorPosition + 1, cursorPosition + 1);
-          break;
-      }
-      
-      // Disparar evento de cambio para cualquier posible funcionalidad vinculada
-      const event = new Event('input', { bubbles: true });
-      input.dispatchEvent(event);
-    }
   </script>
 </body>
 </html>
